@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting.Lifetime;
+using System.Security.Permissions;
 
 namespace GH_LCA
 {
@@ -23,6 +24,10 @@ namespace GH_LCA
             if (elements[0] != null)
                 CalculateB4_allElements(ref elements);
                 CreateDataTableFromListOfElements(elements);
+        }
+
+        public LCA_Model()
+        {
         }
 
         private void CreateDataTableFromListOfElements(List<LCA_Element> elements)
@@ -66,12 +71,44 @@ namespace GH_LCA
         }
 
 
+
+        //UNTESTED !!
+        public void FiterDataTableByMaterialName(string filter)
+        {
+            elementsDataTable = elementsDataTable.Select($"MaterialName = '{filter}'").CopyToDataTable();
+        }
+        //UNTESTED !!
+        public void FiterDataTableByElementName(string filter)
+        {
+            elementsDataTable = elementsDataTable.Select($"Element_Name = {filter}").CopyToDataTable();
+        }
+
+
+
         public List<string> ListUniqueMaterialNames()
         {
-            var uniqueNames = elementsDataTable.AsEnumerable().Select(row => row["MaterialName"]).Distinct().ToList();
+            var uniqueItems = elementsDataTable.AsEnumerable().Select(row => row["MaterialName"]).Distinct().ToList();
 
-            return uniqueNames.Cast<string>().ToList();
+            return uniqueItems.Cast<string>().ToList();
         }
+
+
+        //UNTESTED !!
+        public List<string> ListUniqueElement_Groups()
+        {
+            var uniqueItems = elementsDataTable.AsEnumerable().Select(row => row["Element_Group"]).Distinct().ToList();
+
+            return uniqueItems.Cast<string>().ToList();
+        }
+        //UNTESTED !!
+        public List<string> ListUniqueElement_Names()
+        {
+            var uniqueItems = elementsDataTable.AsEnumerable().Select(row => row["Element_Name"]).Distinct().ToList();
+
+            return uniqueItems.Cast<string>().ToList();
+        }
+
+
         public double GetCollumnSum(string collumn)
         {
             return Convert.ToDouble(elementsDataTable.Compute($"SUM({collumn})", string.Empty));
@@ -89,6 +126,36 @@ namespace GH_LCA
             return rtnList;
 
         }
+
+
+
+        //UNTESTED !!
+        public List<double> GetCollumnSum_ListByElement_Name(string collumn)
+        {
+            List<double> rtnList = new List<double>();
+            List<string> element_Names = ListUniqueElement_Names();
+
+            foreach (string element_Name in element_Names)
+            {
+                rtnList.Add(Convert.ToDouble(elementsDataTable.Compute($"SUM({collumn})", $"Element_Name = '{element_Name}' ")));
+            }
+            return rtnList;
+
+        }
+        //UNTESTED !!
+        public List<double> GetCollumnSum_ListByElement_Group(string collumn)
+        {
+            List<double> rtnList = new List<double>();
+            List<string> element_gorups = ListUniqueElement_Groups();
+
+            foreach (string element_gorup in element_gorups)
+            {
+                rtnList.Add(Convert.ToDouble(elementsDataTable.Compute($"SUM({collumn})", $"Element_Group = '{element_gorup}' ")));
+            }
+            return rtnList;
+
+        }
+
         public List<double> GetCollumnPercentage_ListByMaterial(string collumn, double collumnSum)
         {
             List<double> rtnList = new List<double>();
@@ -102,6 +169,23 @@ namespace GH_LCA
             return rtnList;
 
         }
+
+        public List<double> GetCollumnPercentage_ListByElement(string collumn, double collumnSum)
+        {
+            List<double> rtnList = new List<double>();
+            List<string> materialNames = ListUniqueMaterialNames();
+
+            foreach (string materialName in materialNames)
+            {
+                double _value = (Convert.ToDouble(elementsDataTable.Compute($"SUM({collumn})", $" MaterialName = '{materialName}'")));
+                rtnList.Add(_value / collumnSum * 100);
+            }
+            return rtnList;
+
+        }
+
+
+
 
         public int ListSum(List<int> list )
         {

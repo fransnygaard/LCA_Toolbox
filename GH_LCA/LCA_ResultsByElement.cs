@@ -49,6 +49,7 @@ namespace GH_LCA
 
             if (!DA.GetData<LCA_Model>(0, ref model)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Model not valid"); return; }
 
+            //foreach LCA_Element element in model.get
 
 
 

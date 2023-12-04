@@ -112,14 +112,13 @@ namespace GH_LCA
 
             MenuStaticText menuStaticText0 = new MenuStaticText();
             menuStaticText0.Text = "Select material category.";
-            menuStaticText0.Header = "HEADER";
+            menuStaticText0.Header = "HEADER"; 
             dropdownmenupanel.AddControl(menuStaticText0);
 
 
 
             _dropdownmenu_category = new MenuDropDown(0, "drop_down_menu_cat", "cat");
             _dropdownmenu_category.VisibleItemCount = 10;
-            // _dropdownmenu_category.Header = "A random header hehe";
 
 
             _dropdownmenu_category.AddItem("--ALL--", "------- ALL categories -------");
@@ -148,7 +147,7 @@ namespace GH_LCA
 
             _dropdownmenu_material = new MenuDropDown(1, "drop_down_menu_mat", "mat");
             _dropdownmenu_material.VisibleItemCount = 10;
-            //_dropdownmenu_material.Header = "A random header hehe";
+            //_dropdownmenu_material.Header = "HEADER";
 
             if (dropvariable_category == "--ALL--")
             {
@@ -207,7 +206,7 @@ namespace GH_LCA
 
 
 
-                double _tempNR = 0;
+                //double _tempNR = 0;
 
                 //if (DA.GetData(1, ref _tempNR)) { material.A4_A5 = _tempNR; }
                 //if (DA.GetData(2, ref _tempNR)) { material.C = _tempNR; }

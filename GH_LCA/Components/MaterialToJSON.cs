@@ -58,19 +58,9 @@ namespace GH_LCA.Components
             if (!DA.GetDataList<LCA_Material>(inputParams[Constants.Material.Name], material_list.list)) return;
             if (material_list.list[0] == null) return;
 
-
-            string serialized = string.Empty;
-
-            foreach (LCA_Material mat in material_list.list)
-            {
-                serialized += JsonConvert.SerializeObject(mat);
-                //serialized += ", \n";
-            }
-
-            serialized = JsonConvert.SerializeObject(material_list.list);
+        
+            string serialized = JsonConvert.SerializeObject(material_list.list);
             DA.SetData(outputParams[Constants.JSON.Name], serialized);
-
-
 
         }
 
