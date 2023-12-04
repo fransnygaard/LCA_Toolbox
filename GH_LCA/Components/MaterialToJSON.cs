@@ -64,10 +64,12 @@ namespace GH_LCA.Components
             foreach (LCA_Material mat in material_list.list)
             {
                 serialized += JsonConvert.SerializeObject(mat);
-                serialized += ", \n";
+                //serialized += ", \n";
             }
 
+            serialized = JsonConvert.SerializeObject(material_list.list);
             DA.SetData(outputParams[Constants.JSON.Name], serialized);
+
 
 
         }

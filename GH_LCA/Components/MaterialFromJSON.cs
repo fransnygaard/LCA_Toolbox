@@ -72,19 +72,21 @@ namespace GH_LCA.Components
 
             if (!DA.GetData<string>(inputParams[Constants.FilePath.Name], ref filePath)) 
             {
-                if (!DA.GetData<string>(inputParams[Constants.JSON.Name], ref jsonString)) return;
+                DA.GetData<string>(inputParams[Constants.JSON.Name], ref jsonString);
             }
             else
             {
                 jsonString = File.ReadAllText(filePath);
             }
-           
-            
 
+            jsonString = jsonString.Replace("\\","");
+
+            //LCA_Material materialDeserialize = JsonConvert.DeserializeObject<LCA_Material>(jsonString);
             List<LCA_Material> materialList = JsonConvert.DeserializeObject<List<LCA_Material>>(jsonString);
 
 
             DA.SetDataList(outputParams[Constants.Material.Name], materialList);
+            //DA.SetData(outputParams[Constants.Material.Name], materialDeserialize);
 
 
            // DA.SetData(outputParams[Constants.JOSN.Name], serialized);
