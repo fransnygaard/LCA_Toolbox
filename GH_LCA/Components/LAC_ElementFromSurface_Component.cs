@@ -15,7 +15,7 @@ namespace GH_LCA
         public LAC_ElementFromSurface_Component()
           : base("LCA Create Element from Surface", "LCA Create Element from Surface",
               "Description",
-              Constants.ShortName, Constants.SubElements)
+              Constants.PluginName, Constants.SubElements)
         {
         }
 
@@ -24,16 +24,19 @@ namespace GH_LCA
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddSurfaceParameter("Surface", "Surface", "", GH_ParamAccess.item); //0
-            pManager.AddGenericParameter("Material", "Material", "", GH_ParamAccess.item); //1
-            pManager.AddNumberParameter("Thickness [Rhino Units^2]", "Thickness", "", GH_ParamAccess.item);//2
-            pManager.AddIntegerParameter("Expected lifetime [years]", "Expected lifetime [years]", "", GH_ParamAccess.item,-1);//3
+            pManager.AddGenericParameter(Constants.Material.Name, Constants.Material.NickName, Constants.Material.Discription, GH_ParamAccess.item);
+            
+            pManager.AddNumberParameter(Constants.Volume.Name, Constants.Volume.NickName, Constants.Volume.Discription, GH_ParamAccess.item);
+            
+            pManager.AddIntegerParameter(Constants.Lifetime.Name,Constants.Lifetime.NickName, Constants.Lifetime.Discription, GH_ParamAccess.item,-1);
 
-            pManager.AddTextParameter("ElementName", "ElementName", "", GH_ParamAccess.item); //4
-            Params.Input[4].Optional = true;
+            pManager.AddTextParameter(Constants.Element_Name.Name, Constants.Element_Name.NickName, Constants.Element_Name.Discription, GH_ParamAccess.item);
+            pManager[pManager.ParamCount - 1].Optional = true; 
+            
+            pManager.AddTextParameter(Constants.Element_Group.Name, Constants.Element_Group.NickName, Constants.Element_Group.Discription, GH_ParamAccess.item);
+            pManager[pManager.ParamCount - 1].Optional = true;
 
-            pManager.AddTextParameter("ElementGroup", "ElementGroup", "", GH_ParamAccess.item); //5
-            Params.Input[5].Optional = true;
+
 
         }
 
@@ -42,10 +45,11 @@ namespace GH_LCA
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Element", "Element", "", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Volume[m3]", "Volume[m3]", "", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Weight[kg]", "Weight[kg}", "", GH_ParamAccess.item);
-            pManager.AddNumberParameter("GWP A1-A3 [kg CO2eq]", "GWP A1-A3 [kg CO2eq]", "", GH_ParamAccess.item);
+            pManager.AddGenericParameter(Constants.Element.Name, Constants.Element.NickName, Constants.Element.Discription, GH_ParamAccess.item);
+            
+            pManager.AddNumberParameter(Constants.Weight.Name, Constants.Weight.NickName, Constants.Weight.Discription, GH_ParamAccess.item);
+           
+            pManager.AddNumberParameter(Constants.GWP_A1_A3.Name, Constants.GWP_A1_A3.NickName, Constants.GWP_A1_A3.Discription, GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -54,39 +58,39 @@ namespace GH_LCA
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            Surface surface = null;
-            LCA_Material material = new LCA_Material();
+            //Surface surface = null;
+            //LCA_Material material = new LCA_Material();
 
-            if (!DA.GetData<Surface>(0, ref surface)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "no input Surface"); return; }
-            if (surface == null) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Surface can not be NULL"); return; }
+            //if (!DA.GetData<Surface>(0, ref surface)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "no input Surface"); return; }
+            //if (surface == null) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Surface can not be NULL"); return; }
             
-            if (!DA.GetData<LCA_Material>(1, ref material)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Invalid material input"); return;}
+            //if (!DA.GetData<LCA_Material>(1, ref material)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Invalid material input"); return;}
 
-            double thickness = 0;
+            //double thickness = 0;
 
-            DA.GetData<double>(2, ref thickness);
+            //DA.GetData<double>(2, ref thickness);
 
-            if(thickness <= 0) {  AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Thickness less than or equal to 0"); return; }
+            //if(thickness <= 0) {  AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Thickness less than or equal to 0"); return; }
 
-            thickness = LCA_HelperCalss.convertValueToMeters(thickness);
-            double surfaceArea  = LCA_HelperCalss.convertSquaredValueToMeters(AreaMassProperties.Compute(surface).Area);
-            if (surfaceArea == double.NaN || thickness == double.NaN) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Rhino units needs to be mm, cm or m"); return; }
+            //thickness = LCA_HelperCalss.convertValueToMeters(thickness);
+            //double surfaceArea  = LCA_HelperCalss.convertSquaredValueToMeters(AreaMassProperties.Compute(surface).Area);
+            //if (surfaceArea == double.NaN || thickness == double.NaN) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Rhino units needs to be mm, cm or m"); return; }
 
-            double volume = surfaceArea *  thickness;
+            //double volume = surfaceArea *  thickness;
 
 
-            int expectedLifetime = -1;
-            DA.GetData<int>(3, ref expectedLifetime);
-            LCA_Element element = new LCA_Element(material, volume, expectedLifetime);
+            //int expectedLifetime = -1;
+            //DA.GetData<int>(3, ref expectedLifetime);
+            //LCA_Element element = new LCA_Element(material, volume, expectedLifetime);
 
-            string _tempStr = string.Empty;
-            if (DA.GetData(4, ref _tempStr)) { element.Element_Name = _tempStr; }
-            if (DA.GetData(5, ref _tempStr)) { element.Element_Group = _tempStr; }
+            //string _tempStr = string.Empty;
+            //if (DA.GetData(4, ref _tempStr)) { element.Element_Name = _tempStr; }
+            //if (DA.GetData(5, ref _tempStr)) { element.Element_Group = _tempStr; }
 
-            DA.SetData(0, element);
-            DA.SetData(1, element.Element_Volume);
-            DA.SetData(2, element.Element_Weight);
-            DA.SetData(3, element.Element_GWP);
+            //DA.SetData(0, element);
+            //DA.SetData(1, element.Element_Volume);
+            //DA.SetData(2, element.Element_Weight);
+            //DA.SetData(3, element.Element_GWP);
 
 
         }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,19 +12,19 @@ namespace GH_LCA
     {
         #region naming 
 
-        public static string ShortName
+        public static string PluginName
         {
             get { return "LCA_DEV"; }
 
         }
 
-        public static string Description
+        public static string PluginDescription
         {
             get { return "Plugin to estimate the climate impact of your design"; }
         }
-        public static string LongName
+        public static string PluginLongName
         {
-            get { return ShortName + " v" + Major + "." + Minor; }
+            get { return PluginName + " v" + Major + "." + Minor; }
         }
         private static string Minor
         {
@@ -49,10 +50,30 @@ namespace GH_LCA
         {
             get { return "04 Results"; }
         }
+        public static string SubUtilities
+        {
+            get { return "04 Utilities"; }
+        }
 
         #endregion
 
         //Name, NickName, Input, Output, Outputs.
+
+
+        public static Descriptor JSON
+        {
+            get { return new Descriptor("JSON", "J", "plain text containing one or more materials coded as JSON objects."); }
+        }
+
+        public static Descriptor FilePath
+        {
+            get { return new Descriptor("FilePath", "/file", "use the filepath component to select a file"); }
+        }
+
+        public static Descriptor Folder
+        {
+            get { return new Descriptor("Folder", "/folder", "use the filepath component to select a local or network folder"); }
+        }
         public static Descriptor Model
         {
             get { return new Descriptor("Model", "M", ""); }

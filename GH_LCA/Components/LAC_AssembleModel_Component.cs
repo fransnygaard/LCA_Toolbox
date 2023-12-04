@@ -14,7 +14,7 @@ namespace GH_LCA
         public LAC_AssembleModel_Component()
           : base("LCA Assemble Model", "LCA Assemble Model",
               "Description",
-              Constants.ShortName, Constants.SubModel)
+              Constants.PluginName, Constants.SubModel)
         {
         }
 

@@ -11,12 +11,14 @@
   
   <ItemGroup>
     <PackageReference Include="Grasshopper" Version="7.22.22255.5001" IncludeAssets="compile;build" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
   </ItemGroup>
   
   <ItemGroup>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   
   <ItemGroup>

@@ -7,14 +7,14 @@ namespace GH_LCA
 {
     public class GH_LCAInfo : GH_AssemblyInfo
     {
-        public override string Name => Constants.ShortName;
+        public override string Name => Constants.PluginName;
 
         //Return a 24x24 pixel bitmap to represent this GHA library.
         public override Bitmap Icon => null;
 
 
         //Return a short string describing the purpose of this GHA library.
-        public override string Description => Constants.Description;
+        public override string Description => Constants.PluginDescription;
 
         public override Guid Id => new Guid("162E4178-8907-40DE-A37B-A3073A5B6325");
 

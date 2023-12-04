@@ -14,7 +14,7 @@ namespace GH_LCA
         public LAC_ElementFromCurve_Component()
           : base("LCA Create Element from Curve", "LCA Create Element from Curve",
               "Description",
-              Constants.ShortName, Constants.SubElements)
+              Constants.PluginName, Constants.SubElements)
         {
         }
 

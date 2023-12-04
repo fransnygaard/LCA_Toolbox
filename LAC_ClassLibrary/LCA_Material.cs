@@ -1,7 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GH_LCA
 {
+
+    public class LCA_Material_List
+    {
+        public List<LCA_Material> list { get; set; }
+
+        public LCA_Material_List() { 
+        list = new List<LCA_Material>();
+        }
+
+        public LCA_Material_List(List<LCA_Material> list)
+        {
+            this.list = list;
+        }
+    }
+
+
+
     public class LCA_Material
     {
         public LCA_Material(LCA_Material material)
@@ -36,7 +54,6 @@ namespace GH_LCA
 
 
         //
-        public string MaterialGUID{ get; set; }
 
         //Name 
        private string name;
@@ -82,5 +99,6 @@ namespace GH_LCA
         public double D { get; set; }
 
         public string DataSource { get; set; }
+        public string MaterialGUID{ get; set; }
     }
 }
