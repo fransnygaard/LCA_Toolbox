@@ -35,6 +35,18 @@ namespace GH_LCA.Extentions
 
 
 
+        // USAGE 
+        /*
+            inputParams.Add(Constants.Material.Name, IndexCounter);
+            pManager[pManager.ParamCount - 1].Optional = true;
+
+
+        and to get or set  
+
+        DA.GetData<LCA_Model>(inputParams[Constants.Model.Name], ref model)
+
+         */
+
         protected void registrerInputParams(GH_Component.GH_InputParamManager pManager)
         {
             inputIndexCounter_Reset();

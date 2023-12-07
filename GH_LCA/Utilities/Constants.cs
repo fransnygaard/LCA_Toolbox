@@ -96,7 +96,7 @@ namespace GH_LCA
         }
         public static Descriptor Mat_Name
         {
-            get { return new Descriptor("Name", "N","Material name. Shows up in reports and can be used for filtering"); }
+            get { return new Descriptor("Material Name", "N","Material name. Shows up in reports and can be used for filtering"); }
         }
         public static Descriptor Mat_Category
         {
@@ -126,7 +126,7 @@ namespace GH_LCA
         }
         public static Descriptor GWP_TOTAL
         {
-            get { return new Descriptor("GWP[kg CO2eq / m3]", "GWP", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)."); }
+            get { return new Descriptor("GWP[kg CO2eq] Total", "GWP_Total", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)."); }
 
         }
         public static Descriptor ODP
@@ -164,7 +164,6 @@ namespace GH_LCA
         private string nickname = string.Empty;
         private string description = string.Empty;
 
-
         public Descriptor(string name, string nickname,string disctiption)
         {
             this.name = name;
@@ -185,6 +184,7 @@ namespace GH_LCA
         {
             get { return description; }
         }
+
 
     }
 }

@@ -236,15 +236,15 @@ namespace GH_LCA
 
             //DA.SetData(6, material.GWP);
             //DA.SetData(7, material.ODP);
-            //DA.SetData(8, material.POCP);
-            //DA.SetData(9, material.EP);
-            //DA.SetData(10, material.AP);
-            //DA.SetData(11, material.A4_A5);
-            //DA.SetData(12, material.C);
-            //DA.SetData(13, material.D);
-            //DA.SetData(14, material.DataSource);
+            DA.SetData(8, material.POCP);
+            DA.SetData(9, material.EP);
+            DA.SetData(10, material.AP);
+            DA.SetData(11, material.A4_A5);
+            DA.SetData(12, material.C);
+            DA.SetData(13, material.D);
+            DA.SetData(14, material.DataSource);
 
-            //DA.SetData(15, material.MaterialGUID);
+            DA.SetData(15, material.MaterialGUID);
 
         }
 

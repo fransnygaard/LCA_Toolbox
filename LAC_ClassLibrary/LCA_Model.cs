@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting.Lifetime;
 using System.Security.Permissions;
+using System.Web;
 
 namespace GH_LCA
 {
@@ -14,21 +15,21 @@ namespace GH_LCA
     {
 
         public DataTable elementsDataTable;
-        int calculatedLifetime { get; set; }
+        int modelLifetime { get; set; }
+
+        List<string> listofAllGWPstages = new List<string> { "Element_GWP", "Element_A4", "Element_B4", "Element_C", "Element_D" };
 
 
 
         public LCA_Model(List<LCA_Element> elements,int _lifetime)
         {
-            calculatedLifetime = _lifetime;
+            modelLifetime = _lifetime;
             if (elements[0] != null)
                 CalculateB4_allElements(ref elements);
                 CreateDataTableFromListOfElements(elements);
         }
 
-        public LCA_Model()
-        {
-        }
+
 
         private void CreateDataTableFromListOfElements(List<LCA_Element> elements)
         {
@@ -51,36 +52,47 @@ namespace GH_LCA
         }
         private void CalculateB4_allElements(ref List<LCA_Element> elements)
         {
-            if (calculatedLifetime <= 0)
+            if (modelLifetime <= 0)
                 return;
 
             foreach (LCA_Element element in elements)
             {
-                if (element.Element_ExpectedLifetime > 1 && element.Element_ExpectedLifetime < calculatedLifetime)
+                if (element.Element_ExpectedLifetime > 0 && element.Element_ExpectedLifetime < modelLifetime)
                 {
 
-                    // 40 / 40 = 1
-                    // 50 / 25 = 2
-                    // 50 / 30 = 2
+                    // 40 / 40 = 1 (-1 = 0replacements)
+                    // 50 / 25 = 2 (-1 = 1replacements)
+                    // 50 / 30 = 2 (-1 = 1replacements)
 
-                    element.Element_B4_Nreplacements = (calculatedLifetime) / element.Element_ExpectedLifetime;
+                    element.Element_B4_Nreplacements = (int)Math.Ceiling((decimal)(modelLifetime) / element.Element_ExpectedLifetime)-1;
                     double b4_perTime = element.Element_GWP + element.Element_A4 + element.Element_C + element.Element_D;
-                    element.Element_B4 = b4_perTime * (element.Element_B4_Nreplacements-1);
+                    element.Element_B4 = b4_perTime * (element.Element_B4_Nreplacements);
                 }
             }
         }
 
 
+        public void FilterDataTable(string filter, string filterColumn)
+        {
+            elementsDataTable = elementsDataTable.Select($"{filterColumn} = '{filter}'").CopyToDataTable();
+        }
 
         //UNTESTED !!
         public void FiterDataTableByMaterialName(string filter)
         {
-            elementsDataTable = elementsDataTable.Select($"MaterialName = '{filter}'").CopyToDataTable();
+            FilterDataTable(filter, "MaterialName");
+            //elementsDataTable = elementsDataTable.Select($"MaterialName = '{filter}'").CopyToDataTable();
         }
         //UNTESTED !!
         public void FiterDataTableByElementName(string filter)
         {
             elementsDataTable = elementsDataTable.Select($"Element_Name = {filter}").CopyToDataTable();
+        }
+
+        //UNTESTED !!
+        public void FiterDataTableByElementGroup(string filter)
+        {
+            elementsDataTable = elementsDataTable.Select($"Element_Group = {filter}").CopyToDataTable();
         }
 
 
@@ -109,9 +121,25 @@ namespace GH_LCA
         }
 
 
-        public double GetCollumnSum(string collumn)
+        public double GetColumnSum(string column)
         {
-            return Convert.ToDouble(elementsDataTable.Compute($"SUM({collumn})", string.Empty));
+            return Convert.ToDouble(elementsDataTable.Compute($"SUM({column})", string.Empty));
+        }
+
+        public double GetColumnSum(List<string> columnNames)
+        {
+            double sum = 0;
+            foreach (var column in columnNames)
+            {
+                sum += GetColumnSum(column);
+            }
+            return sum;
+        }
+        
+        public double GetGWPAllStages()
+        {
+            double sum = GetColumnSum(listofAllGWPstages);
+            return sum; 
         }
 
         public List<double> GetCollumnSum_ListByMaterial(string collumn)
@@ -156,7 +184,7 @@ namespace GH_LCA
 
         }
 
-        public List<double> GetCollumnPercentage_ListByMaterial(string collumn, double collumnSum)
+        public List<double> GetCollumnPercentage_ListByMaterial(string collumn)
         {
             List<double> rtnList = new List<double>();
             List<string> materialNames = ListUniqueMaterialNames();
@@ -164,7 +192,7 @@ namespace GH_LCA
             foreach (string materialName in materialNames)
             {
                 double _value = (Convert.ToDouble(elementsDataTable.Compute($"SUM({collumn})", $" MaterialName = '{materialName}'")));
-                rtnList.Add(_value / collumnSum * 100);
+                rtnList.Add(_value / this.GetColumnSum(collumn) * 100);
             }
             return rtnList;
 
