@@ -4,11 +4,12 @@ using LAC_ClassLibrary;
 using Grasshopper.Kernel;
 using Rhino.DocObjects;
 using Rhino.Geometry;
+using GH_GeneralClassLibrary.UI;
 
 
 namespace GH_LCA
 {
-    public class LAC_ElementFromVolume_Component : GH_LCA.Extentions.GH_MyExtendableComponent
+    public class LAC_ElementFromVolume_Component : GH_MyExtendableComponent
     {
         /// <summary>
         /// Initializes a new instance of the LAC_CreateElementFromSurface_Component class.

@@ -9,7 +9,7 @@ using Grasshopper.Kernel.Types;
 
 namespace GH_LCA
 {
-    public static class GH_Extentions
+    public static class GH_LCA_Extentions
     {
         // Cast to material , else create empty material.
         public static bool TryGetMaterial(this IGH_Goo input, out LCA_Material material)

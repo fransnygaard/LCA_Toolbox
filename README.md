@@ -44,3 +44,8 @@
 
 
 			add Karamba name....
+
+
+
+JSON
+-from json need dropdown selection  .,ø

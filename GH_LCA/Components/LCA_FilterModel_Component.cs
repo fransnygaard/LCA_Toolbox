@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using GH_LCA.Extentions;
+using GH_GeneralClassLibrary.UI;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 
@@ -155,6 +155,11 @@ namespace GH_LCA.Components
         public override Guid ComponentGuid
         {
             get { return new Guid("ABFAEF77-5882-49EE-9595-D3EE9C5519FA"); }
+        }
+
+        public override void DrawViewportMeshes(IGH_PreviewArgs args)
+        {
+            base.DrawViewportMeshes(args);
         }
     }
 }

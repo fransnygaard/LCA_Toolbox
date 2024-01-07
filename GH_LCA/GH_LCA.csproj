@@ -10,12 +10,27 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Grasshopper" Version="7.22.22255.5001" IncludeAssets="compile;build" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
   </ItemGroup>
   
   <ItemGroup>
+    <Reference Include="Eto">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 7\System\Eto.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="GH_IO">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 7\Plug-ins\Grasshopper\GH_IO.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Grasshopper">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 7\Plug-ins\Grasshopper\Grasshopper.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RhinoCommon">
+      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 7\System\RhinoCommon.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Windows.Forms" />
@@ -26,7 +41,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\LAC_ClassLibrary\LAC_ClassLibrary.csproj" />
+    <ProjectReference Include="..\..\GH_GeneralClassLibrary\GH_GeneralClassLibrary.csproj" />
+    <ProjectReference Include="..\LAC_ClassLibrary\GH_LCA_ClassLibrary.csproj" />
   </ItemGroup>
   
   <PropertyGroup Condition="$(Configuration) == 'Debug' AND $([MSBuild]::IsOSPlatform(Windows))">

@@ -3,8 +3,8 @@ using Grasshopper.Kernel.Special;
 using System;
 using System.Collections.Generic;
 using LAC_ClassLibrary;
-using KarambaUIWidgets.UIWidgets;
-using GH_LCA.Extentions;
+using GH_GeneralClassLibrary.UI;
+
 using System.Xml.Linq;
 using GH_IO.Serialization;
 
