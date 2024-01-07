@@ -6,7 +6,7 @@
     <Title>GH_LCA</Title>
     <Description>Description of GH_LCA</Description>
     <TargetExt>.gha</TargetExt>
-    <BaseOutputPath>C:\Users\frans\AppData\Roaming\Grasshopper\Libraries\myDevFolder\GH_LCA</BaseOutputPath>
+    <BaseOutputPath>C:\Users\frans\AppData\Roaming\Grasshopper\Libraries\myDevFolder</BaseOutputPath>
   </PropertyGroup>
   
   <ItemGroup>
