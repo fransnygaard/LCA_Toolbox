@@ -56,11 +56,18 @@ namespace GH_LCA
         public double Element_Volume { get; set; }
 
         //A1 - A3
-        public double Element_GWP
+        public double Element_GWP_A13
         {
             get
             {
                 return Element_Volume * Material.GWP;
+            }
+        }
+        public double Element_GWP_A13_noSeq
+        {
+            get
+            {
+                return Math.Max(Element_GWP_A13, 0);
             }
         }
         public double Element_ODP

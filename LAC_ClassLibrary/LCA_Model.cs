@@ -15,12 +15,26 @@ namespace GH_LCA
     {
 
         public DataTable elementsDataTable;
+
+        public bool AllowSequestration = true;
         int modelLifetime { get; set; }
 
-        List<string> listofAllGWPstages = new List<string> { "Element_GWP", "Element_A4", "Element_B4", "Element_C", "Element_D" };
+        List<string> listofAllGWPstages = new List<string> { "Element_GWP_A13", "Element_A4", "Element_B4", "Element_C", "Element_D" };
 
 
+        protected LCA_Model(LCA_Model other)
+        {
+            // Cloning code goes here...
+            this.elementsDataTable = other.elementsDataTable.Copy();
+            this.AllowSequestration = other.AllowSequestration;
+            this.modelLifetime = other.modelLifetime;   
 
+        }
+
+        public LCA_Model Clone()
+        {
+            return new LCA_Model(this);
+        }
         public LCA_Model(List<LCA_Element> elements,int _lifetime)
         {
             modelLifetime = _lifetime;
@@ -38,6 +52,7 @@ namespace GH_LCA
             {
                 elementsDataTable.Columns.Add(new DataColumn(info.Name, info.PropertyType));
             }
+
 
             foreach (LCA_Element element in elements)
             {
@@ -63,9 +78,9 @@ namespace GH_LCA
                     // 40 / 40 = 1 (-1 = 0replacements)
                     // 50 / 25 = 2 (-1 = 1replacements)
                     // 50 / 30 = 2 (-1 = 1replacements)
-
+                    double element_A13 = AllowSequestration ? element.Element_GWP_A13 : element.Element_GWP_A13_noSeq;
                     element.Element_B4_Nreplacements = (int)Math.Ceiling((decimal)(modelLifetime) / element.Element_ExpectedLifetime)-1;
-                    double b4_perTime = element.Element_GWP + element.Element_A4 + element.Element_C + element.Element_D;
+                    double b4_perTime = element_A13 + element.Element_A4 + element.Element_C + element.Element_D;
                     element.Element_B4 = b4_perTime * (element.Element_B4_Nreplacements);
                 }
             }
@@ -81,18 +96,17 @@ namespace GH_LCA
         public void FiterDataTableByMaterialName(string filter)
         {
             FilterDataTable(filter, "MaterialName");
-            //elementsDataTable = elementsDataTable.Select($"MaterialName = '{filter}'").CopyToDataTable();
         }
         //UNTESTED !!
         public void FiterDataTableByElementName(string filter)
         {
-            elementsDataTable = elementsDataTable.Select($"Element_Name = {filter}").CopyToDataTable();
+            elementsDataTable = elementsDataTable.Select($"Element_Name = '{filter}'").CopyToDataTable();
         }
 
         //UNTESTED !!
         public void FiterDataTableByElementGroup(string filter)
         {
-            elementsDataTable = elementsDataTable.Select($"Element_Group = {filter}").CopyToDataTable();
+            elementsDataTable = elementsDataTable.Select($"Element_Group = '{filter}'").CopyToDataTable();
         }
 
 
@@ -123,7 +137,10 @@ namespace GH_LCA
 
         public double GetColumnSum(string column)
         {
+            AdjustColumnForAllowSequestration(ref column);
+
             return Convert.ToDouble(elementsDataTable.Compute($"SUM({column})", string.Empty));
+
         }
 
         public double GetColumnSum(List<string> columnNames)
@@ -142,14 +159,23 @@ namespace GH_LCA
             return sum; 
         }
 
-        public List<double> GetCollumnSum_ListByMaterial(string collumn)
+        private void AdjustColumnForAllowSequestration(ref string column)
         {
+            if (!AllowSequestration && column == "Element_GWP_A13")
+                column = "Element_GWP_A13_noSeq";
+        }
+
+        public List<double> GetColumnSum_ListByMaterial(string column)
+        {
+
+            AdjustColumnForAllowSequestration(ref column);
+
             List<double> rtnList = new List<double>();
             List<string> materialNames = ListUniqueMaterialNames();
 
             foreach (string materialName in materialNames)
             {
-                rtnList.Add(Convert.ToDouble(elementsDataTable.Compute($"SUM({collumn})", $"MaterialName = '{materialName}' ")));
+                rtnList.Add(Convert.ToDouble(elementsDataTable.Compute($"SUM({column})", $"MaterialName = '{materialName}' ")));
             }
             return rtnList;
 
@@ -158,55 +184,67 @@ namespace GH_LCA
 
 
         //UNTESTED !!
-        public List<double> GetCollumnSum_ListByElement_Name(string collumn)
+        public List<double> GetColumnSum_ListByElement_Name(string column)
         {
+
+            AdjustColumnForAllowSequestration(ref column);
+
             List<double> rtnList = new List<double>();
             List<string> element_Names = ListUniqueElement_Names();
 
             foreach (string element_Name in element_Names)
             {
-                rtnList.Add(Convert.ToDouble(elementsDataTable.Compute($"SUM({collumn})", $"Element_Name = '{element_Name}' ")));
+                rtnList.Add(Convert.ToDouble(elementsDataTable.Compute($"SUM({column})", $"Element_Name = '{element_Name}' ")));
             }
             return rtnList;
 
         }
         //UNTESTED !!
-        public List<double> GetCollumnSum_ListByElement_Group(string collumn)
+        public List<double> GetColumnSum_ListByElement_Group(string column)
         {
+
+            AdjustColumnForAllowSequestration(ref column);
+
             List<double> rtnList = new List<double>();
             List<string> element_gorups = ListUniqueElement_Groups();
 
             foreach (string element_gorup in element_gorups)
             {
-                rtnList.Add(Convert.ToDouble(elementsDataTable.Compute($"SUM({collumn})", $"Element_Group = '{element_gorup}' ")));
+                rtnList.Add(Convert.ToDouble(elementsDataTable.Compute($"SUM({column})", $"Element_Group = '{element_gorup}' ")));
             }
             return rtnList;
 
         }
 
-        public List<double> GetCollumnPercentage_ListByMaterial(string collumn)
+        public List<double> GetColumnPercentage_ListByMaterial(string column)
         {
+
+            AdjustColumnForAllowSequestration(ref column);
+
             List<double> rtnList = new List<double>();
             List<string> materialNames = ListUniqueMaterialNames();
 
             foreach (string materialName in materialNames)
             {
-                double _value = (Convert.ToDouble(elementsDataTable.Compute($"SUM({collumn})", $" MaterialName = '{materialName}'")));
-                rtnList.Add(_value / this.GetColumnSum(collumn) * 100);
+                double _value = (Convert.ToDouble(elementsDataTable.Compute($"SUM({column})", $" MaterialName = '{materialName}'")));
+                rtnList.Add(_value / this.GetColumnSum(column) * 100);
             }
             return rtnList;
 
         }
 
-        public List<double> GetCollumnPercentage_ListByElement(string collumn, double collumnSum)
+        public List<double> GetColumnPercentage_ListByElement(string column, double columnSum)
         {
+
+            AdjustColumnForAllowSequestration(ref column);
+
             List<double> rtnList = new List<double>();
             List<string> materialNames = ListUniqueMaterialNames();
 
             foreach (string materialName in materialNames)
             {
-                double _value = (Convert.ToDouble(elementsDataTable.Compute($"SUM({collumn})", $" MaterialName = '{materialName}'")));
-                rtnList.Add(_value / collumnSum * 100);
+                double _value = (Convert.ToDouble(elementsDataTable.Compute($"SUM({column})", $" MaterialName = '{materialName}'")));
+                rtnList.Add(_value / columnSum * 100);
             }
             return rtnList;
 

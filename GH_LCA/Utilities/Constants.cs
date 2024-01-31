@@ -96,17 +96,19 @@ namespace GH_LCA
         }
         public static Descriptor Mat_Name
         {
-            get { return new Descriptor("Material Name", "N","Material name. Shows up in reports and can be used for filtering"); }
+            get { return new Descriptor("Material Name", "N", "Material name. Shows up in reports and can be used for filtering"); }
         }
         public static Descriptor Mat_Category
         {
             get { return new Descriptor("Category", "C", "Material Category. Shows up in reports and can be used for filtering"); }
         }
 
-         public static Descriptor Mat_Description
+        public static Descriptor Mat_Description
         {
             get { return new Descriptor("Description", "D", "Material Description"); }
         }
+
+
 
         public static Descriptor Density
         {
@@ -140,7 +142,7 @@ namespace GH_LCA
 
         public static Descriptor Lifetime
         {
-            get { return new Descriptor("Expected lifetime [years]", "Lifetime", "This i the expected lifetime of this element before it has to be replaced. At end of life ... D + new A1-4 \n a value og -1 means infinite life."); }
+            get { return new Descriptor("Expected lifetime [years]", "Lifetime", "This is the expected lifetime of this element before it has to be replaced. At end of life ... D + new A1-4 \n a value og -1 means infinite life."); }
 
         }
 
@@ -153,6 +155,38 @@ namespace GH_LCA
         {
             get { return new Descriptor("Volume[m3]", "m3", "Total volume in cubic meters [m3]."); }
 
+        }
+
+                    public static Descriptor CrossSection
+        {
+            get { return new Descriptor("Cross section area [Rhino Units^2]", "Cs", "Cross section of element [Rhino Units^2]"); }
+
+        }
+
+
+        public static Descriptor ShellGeo
+        {
+            get { return new Descriptor("Shell Geomerty","Geo","Geomerty of an open shell , NURBS or mesh. For solids use LCA:Element from solid."); }
+        }
+
+        public static Descriptor CurveGeo
+        {
+            get { return new Descriptor("Curve", "C", ""); }
+        }
+
+        public static Descriptor SolidGeo
+        {
+            get { return new Descriptor("Solid Geomerty", "Geo", "Geomerty of an closed volume , NURBS or mesh. For open geomerty use LCA:Element from shell."); }
+        }
+        public static Descriptor Thickness
+        {
+            get { return new Descriptor("Thickness[Rhino Units]", "T", "Thickness of shell"); }
+
+        }
+        public static Descriptor AllowSequestration
+        {
+            get { return new Descriptor("Allow Carbon Sequestration", "Seq", "if false negative GWP values are set to 0 to not account for Carbon Sequestration\n" +
+                "default is False. if carbon Sequestration is to be accounted for stage D4 should be set so not to get unrealistic hopes :-) "); }
         }
 
 
@@ -170,6 +204,12 @@ namespace GH_LCA
             this.nickname = nickname;
             this.description = disctiption;
         }
+
+        public static implicit operator string(Descriptor d)
+        {
+            return d.name;
+        }
+
         public virtual string Name
         {
             get { return name; }

@@ -12,9 +12,9 @@ namespace GH_LCA
         /// Initializes a new instance of the LCA_DeconstructElement_Component class.
         /// </summary>
         public LCA_DeconstructElement_Component()
-          : base("LCA Deconstruct Element", "LCA Deconstruct Element",
+          : base("LCA: Deconstruct Element", "LCA: Deconstruct Element",
               "Description",
-              "LCA", "02 Element")
+              Constants.PluginName, Constants.SubElements)
         {
         }
 
@@ -44,7 +44,7 @@ namespace GH_LCA
             pManager.AddIntegerParameter("Element_ExpectedLifetime", "Element_ExpectedLifetime", "", GH_ParamAccess.item);
             
             //5
-            pManager.AddNumberParameter("Element_GWP", "Element_GWP", "", GH_ParamAccess.item);
+            pManager.AddNumberParameter(Constants.GWP_A1_A3.Name, Constants.GWP_A1_A3.NickName, Constants.GWP_A1_A3.Discription, GH_ParamAccess.item);
             
             //6
             pManager.AddNumberParameter("Element_ODP", "Element_ODP", "", GH_ParamAccess.item);
@@ -95,7 +95,7 @@ namespace GH_LCA
             DA.SetData(2, element.Element_Group);
             DA.SetData(3, element.ElementGUID);
             DA.SetData(4, element.Element_ExpectedLifetime);
-            DA.SetData(5, element.Element_GWP);
+            DA.SetData(5, element.Element_GWP_A13);
             DA.SetData(6, element.Element_ODP);
             DA.SetData(7, element.Element_POCP);
             DA.SetData(8, element.Element_EP);

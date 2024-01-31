@@ -15,7 +15,7 @@ namespace GH_LCA.Components
         /// Initializes a new instance of the FilterModel class.
         /// </summary>
         public LCA_FilterModel_Component()
- : base("LCA Filter Model", "LCA Filter Model",
+ : base("LCA: Filter Model", "LCA: Filter Model",
               "Filter model to only contain a set of materials or elements.",
               Constants.PluginName, Constants.SubResults)
         {
@@ -62,6 +62,7 @@ namespace GH_LCA.Components
             //outputParams.Add(Constants.Model.Name, IndexCounter);
 
 
+
             registrerOutputParams(pManager);
 
         }
@@ -80,6 +81,9 @@ namespace GH_LCA.Components
 
             if (!DA.GetData<LCA_Model>(inputParams[Constants.Model.Name], ref model)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No valid model found !"); return; }
 
+            model = model.Clone();
+
+
             if (DA.GetData(inputParams[Constants.Mat_Name.Name], ref MaterialFilter)) 
             {
                 model.FiterDataTableByMaterialName(MaterialFilter); // FILTER OUT BY NAME
@@ -95,39 +99,9 @@ namespace GH_LCA.Components
                 model.FiterDataTableByElementGroup(Element_groupFilter); // FILTER OUT BY ELEMENT GROUP
             }
 
-
-
+      
             //SET DATA
             DA.SetData(outputParams[Constants.Model.Name], model);
-
-            //DA.SetDataList(1, model.ListUniqueMaterialNames());
-            //DA.SetData(2, model.GetCollumnSum("Element_GWP"));
-            //DA.SetDataList(3, model.GetCollumnSum_ListByMaterial("Element_GWP"));
-            //DA.SetDataList(4, model.GetCollumnPercentage_ListByMaterial("Element_GWP", model.GetCollumnSum("Element_GWP")));
-            //DA.SetData(5, model.GetCollumnSum("Element_Weight"));
-            //DA.SetDataList(6, model.GetCollumnSum_ListByMaterial("Element_Weight"));
-            //DA.SetDataList(7, model.GetCollumnPercentage_ListByMaterial("Element_Weight", model.GetCollumnSum("Element_Weight")));
-            //DA.SetData(8, model.GetCollumnSum("Element_Volume"));
-            //DA.SetDataList(9, model.GetCollumnSum_ListByMaterial("Element_Volume"));
-            //DA.SetDataList(10, model.GetCollumnPercentage_ListByMaterial("Element_Volume", model.GetCollumnSum("Element_Volume")));
-
-
-            ////A1-A3
-            //DA.SetData(11, model.GetCollumnSum("Element_GWP"));
-
-            ////A4
-            //DA.SetData(12, model.GetCollumnSum("Element_A4"));
-
-            ////B4
-            //DA.SetData(13, model.GetCollumnSum("Element_B4"));
-
-
-            ////C
-            //DA.SetData(14, model.GetCollumnSum("Element_C"));
-
-            ////D
-            //DA.SetData(15, model.GetCollumnSum("Element_D"));
-
 
 
 

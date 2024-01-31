@@ -15,7 +15,7 @@ namespace GH_LCA
         /// Initializes a new instance of the LAC_CreateElementFromSurface_Component class.
         /// </summary>
         public LAC_ElementFromVolume_Component()
-          : base("LCA Create Element from volume", "LCA Create Element from volume",
+          : base("LCA: Element from Volume", "LCA: Element from Volume",
               "Description",
               Constants.PluginName, Constants.SubElements)
         {
@@ -89,7 +89,7 @@ namespace GH_LCA
 
             DA.SetData(outputParams[Constants.Element.Name], element);
             DA.SetData(outputParams[Constants.Weight.Name], element.Element_Weight);
-            DA.SetData(outputParams[Constants.GWP_A1_A3.Name], element.Element_GWP);
+            DA.SetData(outputParams[Constants.GWP_A1_A3.Name], element.Element_GWP_A13);
 
 
         }

@@ -17,8 +17,8 @@ namespace GH_LCA
         //GH_ExtendableComponent variables
         private MenuDropDown _dropdownmenu_category;
         private MenuDropDown _dropdownmenu_material;
-        private MenuCheckBox _checkbox1;
-        private MenuCheckBox _checkbox2;
+       // private MenuCheckBox _checkbox1;
+       // private MenuCheckBox _checkbox2;
         private string _valuecheckbox1 = "Initial Value";
         private string _valuecheckbox2 = "Initial Value";
         private MenuRadioButtonGroup _colorGrp;
@@ -72,25 +72,6 @@ namespace GH_LCA
 
         }
 
-        /// <summary>
-        /// Registers all the input parameters for this component.
-        /// </summary>
-        protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
-        {
-            inputIndexCounter_Reset();
-        }
-
-        /// <summary>
-        /// Registers all the output parameters for this component.
-        /// </summary>
-        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
-        {
-            outputIndexCounter_Reset();
-
-            pManager.AddGenericParameter(Constants.Material.Name, Constants.Material.NickName, Constants.Material.Discription, GH_ParamAccess.item); // 0
-            outputParams.Add(pManager[pManager.ParamCount - 1].Name, IndexCounter);
-
-        }
 
         protected override void Setup(GH_ExtendableComponentAttributes attr)
         {
@@ -112,7 +93,7 @@ namespace GH_LCA
 
             MenuStaticText menuStaticText0 = new MenuStaticText();
             menuStaticText0.Text = "Select material category.";
-            menuStaticText0.Header = "HEADER"; 
+            menuStaticText0.Header = "HEADER";
             dropdownmenupanel.AddControl(menuStaticText0);
 
 
@@ -122,7 +103,7 @@ namespace GH_LCA
 
 
             _dropdownmenu_category.AddItem("--ALL--", "------- ALL categories -------");
- 
+
             foreach (string group in SqliteDataAcces.GetMaterialGroups())
             {
                 _dropdownmenu_category.AddItem(group, group);
@@ -169,7 +150,7 @@ namespace GH_LCA
             dropdownmenupanel.AddControl(_dropdownmenu_material);
 
             _dropdownmenu_material.ValueChanged += _dropdown_material__valueChanged;
-           // dropvariable_material = _dropdownmenu_material.Items[_dropdownmenu_material.Value].name;
+            // dropvariable_material = _dropdownmenu_material.Items[_dropdownmenu_material.Value].name;
 
 
             //Add Panel
@@ -178,6 +159,28 @@ namespace GH_LCA
             //update_dropdown_category(true); 
 
         }
+
+        /// <summary>
+        /// Registers all the input parameters for this component.
+        /// </summary>
+        protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
+        {
+            inputIndexCounter_Reset();
+        }
+
+        /// <summary>
+        /// Registers all the output parameters for this component.
+        /// </summary>
+        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
+        {
+            outputIndexCounter_Reset();
+
+            pManager.AddGenericParameter(Constants.Material.Name, Constants.Material.NickName, Constants.Material.Discription, GH_ParamAccess.item); // 0
+            outputParams.Add(pManager[pManager.ParamCount - 1].Name, IndexCounter);
+
+        }
+
+        
 
 
         //Presitent variables

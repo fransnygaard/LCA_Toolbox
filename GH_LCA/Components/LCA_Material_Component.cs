@@ -180,7 +180,7 @@ namespace GH_LCA
 
             if(DA.GetData(inputParams[Constants.Mat_Name.Name], ref _tempSTR)) { material.Name = _tempSTR; }
 
-            if (DA.GetData(inputParams[Constants.Mat_Category.Name], ref _tempSTR)) { material.Category = _tempSTR; }
+            if (DA.GetData(inputParams[Constants.Mat_Category], ref _tempSTR)) { material.Category = _tempSTR; }
 
             if (DA.GetData(inputParams[Constants.Mat_Description.Name], ref _tempSTR)) { material.Description = _tempSTR; }
 
