@@ -14,7 +14,7 @@ namespace GH_LCA
 
         public static string PluginName
         {
-            get { return "LCA_DEV"; }
+            get { return "LCA_Toolbox"; }
 
         }
 

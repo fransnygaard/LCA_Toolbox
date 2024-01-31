@@ -60,7 +60,7 @@ namespace GH_LCA
 
         private static string LoadConnectionString()
         {
-            return @"Data Source =.\materialDB_dev.db; Version = 3;";
+            return @"Data Source =.\materialDB.db; Version = 3;";
             //return ConfigurationManager.ConnectionStrings["Sqlite"].ConnectionString;
         }
     }
