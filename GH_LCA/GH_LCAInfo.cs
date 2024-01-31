@@ -24,6 +24,6 @@ namespace GH_LCA
         //Return a string representing your preferred contact details.
         public override string AuthorContact => "";
 
-        public override string Version => "0.1.0-Alpha";
+        public override string Version => "0.1.1-Alpha";
     }
 }
