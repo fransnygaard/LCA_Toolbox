@@ -126,6 +126,11 @@ namespace GH_LCA
             get { return new Descriptor("GWP[kg CO2eq / m3] A1-A3", "GWP A1-A3", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2).\n This is for stages A1 to A3"); }
 
         }
+        public static Descriptor GWP_ELEMENT
+        {
+            get { return new Descriptor("Element GWP[kg CO2eq] A1-A3", "Element GWP", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)."); }
+
+        }
         public static Descriptor GWP_TOTAL
         {
             get { return new Descriptor("GWP[kg CO2eq] Total", "GWP_Total", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)."); }

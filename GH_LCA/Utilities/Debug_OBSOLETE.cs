@@ -75,5 +75,13 @@ namespace LCA_Toolbox.Utilities
         {
             get { return new Guid("840A27C4-B302-4AFC-94DF-C9276A78469B"); }
         }
+
+        public override GH_Exposure Exposure 
+        {
+            get
+            {
+                return GH_Exposure.hidden;
+            }
+        }
     }
 }

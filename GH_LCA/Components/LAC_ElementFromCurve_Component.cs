@@ -47,7 +47,7 @@ namespace GH_LCA
             pManager.AddGenericParameter(Constants.Element.Name,Constants.Element.NickName,Constants.Element.Discription, GH_ParamAccess.item);
             pManager.AddNumberParameter(Constants.Volume.Name,Constants.Volume.NickName,Constants.Volume.Discription, GH_ParamAccess.item);
             pManager.AddNumberParameter(Constants.Weight.Name,Constants.Weight.NickName,Constants.Weight.Discription, GH_ParamAccess.item);
-            pManager.AddNumberParameter(Constants.GWP_A1_A3.Name,Constants.GWP_A1_A3.NickName, Constants.GWP_A1_A3.Discription, GH_ParamAccess.item);
+            pManager.AddNumberParameter(Constants.GWP_ELEMENT.Name, Constants.GWP_ELEMENT.NickName, Constants.GWP_ELEMENT.Discription, GH_ParamAccess.item);
 
             registrerOutputParams(pManager);
         }
@@ -102,7 +102,7 @@ namespace GH_LCA
             DA.SetData(outputParams[Constants.Element], element);
             DA.SetData(outputParams[Constants.Volume], element.Element_Volume);
             DA.SetData(outputParams[Constants.Weight], element.Element_Weight);
-            DA.SetData(outputParams[Constants.GWP_A1_A3], element.Element_GWP_A13);
+            DA.SetData(outputParams[Constants.GWP_ELEMENT], element.Element_GWP_A13);
 
 
         }
