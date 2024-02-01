@@ -1,9 +1,0 @@
-in:PermutationID,out:Materials,out:GWP[kg CO2eq / m3] A1-A3,out:Weight[kg],img
-{0;0},Wood-Wood-Wood,-4.6105e+11,3.0917e+11,Wood-Wood-Wood_Front.png
-{0;1},Wood-Wood-S355,5.8298e+12,5.2003e+12,Wood-Wood-S355_Front.png
-{0;2},Wood-S355-Wood,-3.4796e+11,3.971e+11,Wood-S355-Wood_Front.png
-{0;3},Wood-S355-S355,5.9429e+12,5.2882e+12,Wood-S355-S355_Front.png
-{0;4},S355-Wood-Wood,-9.071e+10,1.2446e+11,S355-Wood-Wood_Front.png
-{0;5},S355-Wood-S355,1.6354e+12,1.4665e+12,S355-Wood-S355_Front.png
-{0;6},S355-S355-Wood,2.2382e+10,2.1238e+11,S355-S355-Wood_Front.png
-{0;7},S355-S355-S355,1.7484e+12,1.5544e+12,S355-S355-S355_Front.png
