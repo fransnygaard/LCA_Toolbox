@@ -66,9 +66,6 @@ namespace LCA_Toolbox.Database
         {
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             return $@"Data Source={path}\materialDB_20240130.db; Version = 3;";
-            //return @"Data Source=|DataDirectory|\materialDB_20240130.db";
-            //return @"Data Source = materialDB_20240130.db; Version = 3;";
-            //return ConfigurationManager.ConnectionStrings["Sqlite"].ConnectionString;
         }
     }
 }
