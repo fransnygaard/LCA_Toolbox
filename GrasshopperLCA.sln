@@ -5,8 +5,6 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LCA_Toolbox", "GH_LCA\LCA_Toolbox.csproj", "{C83BADDA-077D-478A-8EE8-82C1D50CF1D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GH_LCA_ClassLibrary", "LAC_ClassLibrary\GH_LCA_ClassLibrary.csproj", "{ABC4EE53-CD93-424A-8FF7-67F18E668786}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GH_GeneralClassLibrary", "..\GH_GeneralClassLibrary\GH_GeneralClassLibrary.csproj", "{1FE9A8CA-EE27-49D2-B8C1-5176A9ED2888}"
 EndProject
 Global
@@ -19,10 +17,6 @@ Global
 		{C83BADDA-077D-478A-8EE8-82C1D50CF1D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C83BADDA-077D-478A-8EE8-82C1D50CF1D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C83BADDA-077D-478A-8EE8-82C1D50CF1D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ABC4EE53-CD93-424A-8FF7-67F18E668786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ABC4EE53-CD93-424A-8FF7-67F18E668786}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ABC4EE53-CD93-424A-8FF7-67F18E668786}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ABC4EE53-CD93-424A-8FF7-67F18E668786}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1FE9A8CA-EE27-49D2-B8C1-5176A9ED2888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1FE9A8CA-EE27-49D2-B8C1-5176A9ED2888}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FE9A8CA-EE27-49D2-B8C1-5176A9ED2888}.Release|Any CPU.ActiveCfg = Release|Any CPU

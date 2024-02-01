@@ -62,6 +62,7 @@ namespace LCA_Toolbox.Database
             }
         }
 
+        public static string LoadConnectionStringPublic { get => LoadConnectionString(); }
         private static string LoadConnectionString()
         {
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

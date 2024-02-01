@@ -44,9 +44,7 @@ namespace LCA_Toolbox.Utilities
         {
             List<string> rtnList = new List<string>();
 
-
-            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            rtnList.Add($@"Data Source={path}\materialDB_20240130.db; Version = 3;");
+            rtnList.Add(Database.SqliteDataAcces.LoadConnectionStringPublic);
 
 
 
