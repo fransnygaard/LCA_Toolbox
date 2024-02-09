@@ -55,10 +55,24 @@ namespace GH_LCA
             get { return "04 Utilities"; }
         }
 
-        #endregion
+        public static string Tools
+        {
+            get { return "Misc Tools"; }
+
+        }
+
+        public static string SubCategory_Permutations
+        {
+            get { return "Combinations and Variations"; }
+
+        }
+
+
+        #endregion naming
 
         //Name, NickName, Input, Output, Outputs.
 
+        #region inputOutput
 
         public static Descriptor JSON
         {
@@ -126,6 +140,12 @@ namespace GH_LCA
             get { return new Descriptor("GWP[kg CO2eq / m3] A1-A3", "GWP A1-A3", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2).\n This is for stages A1 to A3"); }
 
         }
+
+        public static Descriptor GWP_B6
+        {
+            get { return new Descriptor("GWP [kg CO2eq / year] B6", "GWP B6", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2).\n This is for stage B6 Operational Energy"); }
+
+        }
         public static Descriptor GWP_ELEMENT
         {
             get { return new Descriptor("Element GWP[kg CO2eq] A1-A3", "Element GWP", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)."); }
@@ -162,41 +182,68 @@ namespace GH_LCA
 
         }
 
-                    public static Descriptor CrossSection
+        public static Descriptor CrossSection
         {
             get { return new Descriptor("Cross section area [Rhino Units^2]", "Cs", "Cross section of element [Rhino Units^2]"); }
 
-        }
-
-
-        public static Descriptor ShellGeo
-        {
-            get { return new Descriptor("Shell Geomerty","Geo","Geomerty of an open shell , NURBS or mesh. For solids use LCA:Element from solid."); }
-        }
-
-        public static Descriptor CurveGeo
-        {
-            get { return new Descriptor("Curve", "C", ""); }
-        }
-
-        public static Descriptor SolidGeo
-        {
-            get { return new Descriptor("Solid Geomerty", "Geo", "Geomerty of an closed volume , NURBS or mesh. For open geomerty use LCA:Element from shell."); }
         }
         public static Descriptor Thickness
         {
             get { return new Descriptor("Thickness[Rhino Units]", "T", "Thickness of shell"); }
 
         }
-        public static Descriptor AllowSequestration
+
+        #region geo
+
+        public static Descriptor ShellGeo
         {
-            get { return new Descriptor("Allow Carbon Sequestration", "Seq", "if false negative GWP values are set to 0 to not account for Carbon Sequestration\n" +
-                "default is False. if carbon Sequestration is to be accounted for stage D4 should be set so not to get unrealistic hopes :-) "); }
+            get { return new Descriptor("Shell Geomerty", "Geo", "Geomerty of an open shell , NURBS or mesh. For solids use LCA:Element from solid."); }
         }
 
+        public static Descriptor Curve
+        {
+            get { return new Descriptor("Curve", "Crv", ""); }
+        }
+
+        public static Descriptor Curves
+        {
+            get { return new Descriptor("Curves[]", "Crv[]", "List of curves"); }
+        }
+
+        public static Descriptor SolidGeo
+        {
+            get { return new Descriptor("Solid Geomerty", "Geo", "Geomerty of an closed volume , NURBS or mesh. For open geomerty use LCA:Element from shell."); }
+        }
+
+        public static Descriptor Point
+        {
+            get { return new Descriptor("Point", "Pt", "Point"); }
+        }
+        public static Descriptor Points
+        {
+            get { return new Descriptor("Points[]", "Pt[]", "List of points"); }
+        }
+        public static Descriptor Plane
+        {
+            get { return new Descriptor("Plane", "P", "Plane"); }
+
+
+        }
+
+        #endregion geo
+
+        public static Descriptor AllowSequestration
+        {
+            get
+            {
+                return new Descriptor("Allow Carbon Sequestration", "Seq", "if false negative GWP values are set to 0 to not account for Carbon Sequestration\n" +
+                "default is False. if carbon Sequestration is to be accounted for stage D4 should be set so not to get unrealistic hopes :-) ");
+            }
+        }
+
+        #endregion inputOutput
 
     }
-
     public class Descriptor
     {
         private string name = string.Empty;

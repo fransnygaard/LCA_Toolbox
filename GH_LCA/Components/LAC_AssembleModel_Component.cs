@@ -24,7 +24,10 @@ namespace GH_LCA
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddGenericParameter(Constants.Element.Name, Constants.Element.NickName, Constants.Element.Discription, GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Calculated building lifetime [years]", "Calculated building lifetime [years]", "", GH_ParamAccess.item, -1);//1
+
+            pManager.AddNumberParameter(Constants.GWP_B6.Name, Constants.GWP_B6.NickName, Constants.GWP_B6.Discription, GH_ParamAccess.item,0);
+
+            pManager.AddIntegerParameter(Constants.Lifetime.Name,Constants.Lifetime.NickName, Constants.Lifetime.Discription, GH_ParamAccess.item, -1);//1
             
             
             registrerInputParams(pManager);
@@ -53,12 +56,16 @@ namespace GH_LCA
             if (!DA.GetDataList(0, elements)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No Elements found !"); return; }
             if (elements[0] == null) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No Elements found"); return; }
 
+            double GWP_B6_perYear = 0;
+            DA.GetData(inputParams[Constants.GWP_B6], ref GWP_B6_perYear);
 
             int modelifetime = -1;
             DA.GetData<int>(1, ref modelifetime);
 
             LCA_Model model = new LCA_Model(elements, modelifetime);
+            model.model_GWP_B6_perYear = GWP_B6_perYear;
             debugLog.Add(model.elementsDataTable.ToString());
+
 
 
 

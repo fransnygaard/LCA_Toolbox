@@ -25,7 +25,7 @@ namespace GH_LCA
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter(Constants.CurveGeo.Name, Constants.CurveGeo.NickName, Constants.CurveGeo.Discription, GH_ParamAccess.item); //0
+            pManager.AddCurveParameter(Constants.Curve.Name, Constants.Curve.NickName, Constants.Curve.Discription, GH_ParamAccess.item); //0
             pManager.AddGenericParameter(Constants.Material.Name,Constants.Material.NickName,Constants.Material.Discription, GH_ParamAccess.item); //1
             pManager.AddNumberParameter(Constants.CrossSection.Name, Constants.CrossSection.NickName,Constants.CrossSection.Discription, GH_ParamAccess.item);//2
             pManager.AddIntegerParameter(Constants.Lifetime.Name, Constants.Lifetime.NickName,Constants.Lifetime.Discription, GH_ParamAccess.item,-1);//3
@@ -61,7 +61,7 @@ namespace GH_LCA
             Curve curve = null;
             LCA_Material material = new LCA_Material();
 
-            if (!DA.GetData<Curve>(inputParams[Constants.CurveGeo], ref curve)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "no input curve"); return; }
+            if (!DA.GetData<Curve>(inputParams[Constants.Curve], ref curve)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "no input curve"); return; }
             if (curve == null) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Curve can not be NULL"); return; }
 
 

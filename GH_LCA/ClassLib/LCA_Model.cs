@@ -15,9 +15,11 @@ namespace GH_LCA
     {
 
         public DataTable elementsDataTable;
+        private DataTable timeline;
 
         public bool AllowSequestration = true;
-        int modelLifetime { get; set; }
+        double modelLifetime { get; set; }
+        public double model_GWP_B6_perYear { get; set; }
 
         List<string> listofAllGWPstages = new List<string> { "Element_GWP_A13", "Element_A4", "Element_B4", "Element_C", "Element_D" };
 
@@ -26,8 +28,11 @@ namespace GH_LCA
         {
             // Cloning code goes here...
             this.elementsDataTable = other.elementsDataTable.Copy();
+            this.timeline = other.timeline.Copy();
+
             this.AllowSequestration = other.AllowSequestration;
             this.modelLifetime = other.modelLifetime;   
+            this.model_GWP_B6_perYear = other.model_GWP_B6_perYear;
 
         }
 
@@ -41,6 +46,25 @@ namespace GH_LCA
             if (elements[0] != null)
                 CalculateB4_allElements(ref elements);
                 CreateDataTableFromListOfElements(elements);
+            model_GWP_B6_perYear = 0;
+        }
+
+        public void populateTimeline()
+        {
+            timeline.Clear();
+
+            timeline.Columns.Add(new DataColumn("A1-A3", typeof(double))); //Production phase
+            timeline.Columns.Add(new DataColumn("A4", typeof(double))); //Trasport to site
+            timeline.Columns.Add(new DataColumn("A5", typeof(double))); //Trasport to site
+            timeline.Columns.Add(new DataColumn("B1", typeof(double))); //Use
+            timeline.Columns.Add(new DataColumn("B2", typeof(double))); //Maintenence
+            timeline.Columns.Add(new DataColumn("B3", typeof(double))); //Repair
+            timeline.Columns.Add(new DataColumn("B4", typeof(double))); //Replacement
+            timeline.Columns.Add(new DataColumn("B5", typeof(double))); //Refurbishment
+            timeline.Columns.Add(new DataColumn("B6", typeof(double))); //operational energy
+            timeline.Columns.Add(new DataColumn("C1-C4", typeof(double))); // End of life
+            timeline.Columns.Add(new DataColumn("D", typeof(double))); //Beyond lifetime
+
         }
 
 

@@ -1,7 +1,6 @@
-﻿using System;
+﻿/*
+ using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 
 namespace GH_LCA
 {
@@ -24,52 +23,44 @@ namespace GH_LCA
 
     public class LCA_Material
     {
-        DataTable dt;
-        public LCA_Material(LCA_Material other)
+        public LCA_Material(LCA_Material material)
         {
-            this.dt = other.dt.Copy();
-            //Name = material.Name;
-            //Category = material.Category;
+            Name = material.Name;
+            Category = material.Category;
 
-            //Description = material.Description;
-            //Density = material.Density;
-            //Insulation = material.Insulation;
+            Description = material.Description;
+            Density = material.Density;
+            Insulation = material.Insulation;
 
-            //GWP = material.GWP;
-            //ODP = material.ODP;
-            //POCP = material.POCP;
-            //EP = material.EP;
-            //AP = material.AP;
+            GWP = material.GWP;
+            ODP = material.ODP;
+            POCP = material.POCP;
+            EP = material.EP;
+            AP = material.AP;
 
-            //A4_A5 = material.A4_A5;
-            //C = material.C;
-            //D = material.D;
+            A4_A5 = material.A4_A5;
+            C = material.C;
+            D = material.D;
 
-            //DataSource = material.DataSource;
-            //MaterialGUID = Guid.NewGuid().ToString();
+            DataSource = material.DataSource;
+            MaterialGUID = Guid.NewGuid().ToString();
 
         }
 
 
         public LCA_Material()
         {
-            dt = getNewMaterialDataTable();
             MaterialGUID = Guid.NewGuid().ToString();
         }
 
 
-        private DataTable getNewMaterialDataTable()
-        {
-            dt.Clear();
-
-            dt.Columns.Add("name", typeof(string));
-            dt.Columns.Add("category", typeof(string));
-            dt.Columns.Add("description", typeof(string));
-
-        }
         //
 
-       public string Name { get { return dt.Rows[0]["name"].ToString(); } set { dt.Rows[0]["name"] = value; } }
+        //Name 
+       private string name;
+       public string Name { get { return this.name; } set { this.name = value; } }
+
+        private string category;
         public string Category
         {
             get
@@ -85,7 +76,7 @@ namespace GH_LCA
             }
         }
 
-        public string Description { get { return dt.Rows[0]["description"].ToString(); } set { dt.Rows[0]["description"] = value; } }
+        public string Description { get; set; }
 
         //Density [kg/m3]
         public double Density { get; set; }
@@ -112,3 +103,4 @@ namespace GH_LCA
         public string MaterialGUID{ get; set; }
     }
 }
+*/
