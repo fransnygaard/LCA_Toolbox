@@ -23,9 +23,9 @@ namespace GH_LCA
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter(Constants.Element.Name, Constants.Element.NickName, Constants.Element.Discription, GH_ParamAccess.list);
+            pManager.AddGenericParameter(Constants.Elements.Name, Constants.Elements.NickName, Constants.Elements.Discription, GH_ParamAccess.list);
 
-            pManager.AddNumberParameter(Constants.GWP_B6.Name, Constants.GWP_B6.NickName, Constants.GWP_B6.Discription, GH_ParamAccess.item,0);
+            pManager.AddNumberParameter(Constants.GWP_B6.Name, Constants.GWP_B6.NickName, Constants.GWP_B6.Discription, GH_ParamAccess.item,0.0);
 
             pManager.AddIntegerParameter(Constants.Lifetime.Name,Constants.Lifetime.NickName, Constants.Lifetime.Discription, GH_ParamAccess.item, -1);//1
             
@@ -53,18 +53,18 @@ namespace GH_LCA
             List<string> debugLog = new List<string>();
             List<LCA_Element> elements = new List<LCA_Element>();
 
-            if (!DA.GetDataList(0, elements)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No Elements found !"); return; }
+            if (!DA.GetDataList(Constants.Elements, elements)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No Elements found !"); return; }
             if (elements[0] == null) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No Elements found"); return; }
 
-            double GWP_B6_perYear = 0;
-            DA.GetData(inputParams[Constants.GWP_B6], ref GWP_B6_perYear);
+            double GWP_B6_perYear = default;
+            DA.GetData<double>(inputParams[Constants.GWP_B6], ref GWP_B6_perYear);
 
             int modelifetime = -1;
-            DA.GetData<int>(1, ref modelifetime);
+            DA.GetData<int>(inputParams[Constants.Lifetime], ref modelifetime);
 
-            LCA_Model model = new LCA_Model(elements, modelifetime);
-            model.model_GWP_B6_perYear = GWP_B6_perYear;
-            debugLog.Add(model.elementsDataTable.ToString());
+            LCA_Model model = new LCA_Model(elements, modelifetime, GWP_B6_perYear);
+
+           // debugLog.Add(model.elementsDataTable.ToString());
 
 
 

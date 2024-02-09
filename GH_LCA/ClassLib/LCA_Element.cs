@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -17,6 +18,10 @@ namespace GH_LCA
         public int Element_B4_Nreplacements { get; set; }
         public double Element_B4 { get; set; }
 
+        public List<int> Element_B4years { get; set; }
+        public double Element_B4perTime { get; set; }
+        
+
 
         public string Element_Name { get; set; }
         public string Element_Group { get; set; }
@@ -29,6 +34,8 @@ namespace GH_LCA
 
             Element_B4_Nreplacements = 0;
             Element_B4 = 0;
+            Element_B4perTime = 0;
+            Element_B4years = new List<int>();
 
             ElementGUID = Guid.NewGuid().ToString();
         }
@@ -60,7 +67,7 @@ namespace GH_LCA
         {
             get
             {
-                return Element_Volume * Material.GWP;
+                return Element_Volume * Material.A1toA3;
             }
         }
         public double Element_GWP_A13_noSeq
@@ -103,7 +110,7 @@ namespace GH_LCA
         {
             get
             {
-                double cost = Material.A4_A5 * Element_Weight;
+                double cost = Material.A4 * Element_Weight;
                 if (cost > 0)
                     return cost;
                 else
@@ -115,7 +122,7 @@ namespace GH_LCA
         {
             get
             {
-                double cost = Material.C * Element_Weight;
+                double cost = Material.C1toC4 * Element_Weight;
                 if (cost > 0)
                     return cost;
                 else

@@ -1,4 +1,5 @@
-﻿using Rhino.Geometry;
+﻿using Grasshopper.GUI;
+using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,6 +8,8 @@ using System.Reflection;
 using System.Runtime.Remoting.Lifetime;
 using System.Security.Permissions;
 using System.Web;
+using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace GH_LCA
 {
@@ -18,7 +21,7 @@ namespace GH_LCA
         private DataTable timeline;
 
         public bool AllowSequestration = true;
-        double modelLifetime { get; set; }
+        int modelLifetime { get; set; }
         public double model_GWP_B6_perYear { get; set; }
 
         List<string> listofAllGWPstages = new List<string> { "Element_GWP_A13", "Element_A4", "Element_B4", "Element_C", "Element_D" };
@@ -40,75 +43,130 @@ namespace GH_LCA
         {
             return new LCA_Model(this);
         }
-        public LCA_Model(List<LCA_Element> elements,int _lifetime)
+        public LCA_Model(List<LCA_Element> elements,int _lifetime, double B6_perYear)
         {
             modelLifetime = _lifetime;
             if (elements[0] != null)
                 CalculateB4_allElements(ref elements);
                 CreateDataTableFromListOfElements(elements);
-            model_GWP_B6_perYear = 0;
+
+            model_GWP_B6_perYear = B6_perYear;
+
+            timeline = ConstructTimelineDataTable();
         }
 
-        public void populateTimeline()
+        public DataTable ConstructTimelineDataTable()
         {
-            timeline.Clear();
+            DataTable rtnDT = new DataTable();
 
-            timeline.Columns.Add(new DataColumn("A1-A3", typeof(double))); //Production phase
-            timeline.Columns.Add(new DataColumn("A4", typeof(double))); //Trasport to site
-            timeline.Columns.Add(new DataColumn("A5", typeof(double))); //Trasport to site
-            timeline.Columns.Add(new DataColumn("B1", typeof(double))); //Use
-            timeline.Columns.Add(new DataColumn("B2", typeof(double))); //Maintenence
-            timeline.Columns.Add(new DataColumn("B3", typeof(double))); //Repair
-            timeline.Columns.Add(new DataColumn("B4", typeof(double))); //Replacement
-            timeline.Columns.Add(new DataColumn("B5", typeof(double))); //Refurbishment
-            timeline.Columns.Add(new DataColumn("B6", typeof(double))); //operational energy
-            timeline.Columns.Add(new DataColumn("C1-C4", typeof(double))); // End of life
-            timeline.Columns.Add(new DataColumn("D", typeof(double))); //Beyond lifetime
+            rtnDT.Columns.Add(new DataColumn("A1-A3", typeof(double))); //Production phase
+            rtnDT.Columns.Add(new DataColumn("A4", typeof(double))); //Trasport to site
+            rtnDT.Columns.Add(new DataColumn("A5", typeof(double))); //Assembly
+            rtnDT.Columns.Add(new DataColumn("B1", typeof(double))); //Use
+            rtnDT.Columns.Add(new DataColumn("B2", typeof(double))); //Maintenence
+            rtnDT.Columns.Add(new DataColumn("B3", typeof(double))); //Repair
+            rtnDT.Columns.Add(new DataColumn("B4", typeof(double))); //Replacement
+            rtnDT.Columns.Add(new DataColumn("B5", typeof(double))); //Refurbishment
+            rtnDT.Columns.Add(new DataColumn("B6", typeof(double))); //operational energy
+            rtnDT.Columns.Add(new DataColumn("C1-C4", typeof(double))); // End of life
+            rtnDT.Columns.Add(new DataColumn("D", typeof(double))); //Beyond lifetime
 
-        }
+            foreach (DataColumn col in rtnDT.Columns)
+            { col.DefaultValue = 0; }
 
 
-
-        private void CreateDataTableFromListOfElements(List<LCA_Element> elements)
-        {
-            elementsDataTable = new DataTable();
-            foreach (PropertyInfo info in typeof(LCA_Element).GetProperties())
+            //init all values to 0 and and add B6 every year.
+            for (int i = 0; i < modelLifetime; i++)
             {
-                elementsDataTable.Columns.Add(new DataColumn(info.Name, info.PropertyType));
+                DataRow row = rtnDT.NewRow();
+
+                row.SetField("B6", model_GWP_B6_perYear);
+
+                rtnDT.Rows.Add(row);
+            }
+
+            // Set Year 0
+            rtnDT.Rows[0].SetField("A1-A3", GetColumnSum("Element_GWP_A13"));
+            rtnDT.Rows[0].SetField("A4", GetColumnSum("Element_A4"));
+
+            //Set B4 replacements
+
+            foreach (DataRow element in elementsDataTable.Rows)
+            {
+                foreach(int year in (List<int>)element["Element_B4years"])
+                {
+                    rtnDT.Rows[year].SetField("B4", (double)rtnDT.Rows[0]["B4"] + (double)element["Element_B4perTime"]);
+                    rtnDT.Rows[year].SetField("C1-C4", (double)rtnDT.Rows[0]["C1-C4"] + (double)element["Element_C"]);
+                    rtnDT.Rows[year].SetField("D", (double)rtnDT.Rows[0]["D"] + (double)element["Element_D"]);
+                }
             }
 
 
-            foreach (LCA_Element element in elements)
+            // Set Year n
+
+            rtnDT.Rows[modelLifetime-1].SetField("C1-C4", GetColumnSum("Element_C"));
+            rtnDT.Rows[modelLifetime-1].SetField("D", GetColumnSum("Element_D"));
+
+            return rtnDT;
+
+
+            }
+
+
+            private void CreateDataTableFromListOfElements(List<LCA_Element> elements)
             {
-                DataRow dr = elementsDataTable.NewRow();
+                elementsDataTable = new DataTable();
                 foreach (PropertyInfo info in typeof(LCA_Element).GetProperties())
                 {
-                    dr[info.Name] = info.GetValue(element, null);
+                    elementsDataTable.Columns.Add(new DataColumn(info.Name, info.PropertyType));
                 }
-                elementsDataTable.Rows.Add(dr);
-            }
 
-        }
-        private void CalculateB4_allElements(ref List<LCA_Element> elements)
-        {
-            if (modelLifetime <= 0)
-                return;
 
-            foreach (LCA_Element element in elements)
-            {
-                if (element.Element_ExpectedLifetime > 0 && element.Element_ExpectedLifetime < modelLifetime)
+                foreach (LCA_Element element in elements)
                 {
-
-                    // 40 / 40 = 1 (-1 = 0replacements)
-                    // 50 / 25 = 2 (-1 = 1replacements)
-                    // 50 / 30 = 2 (-1 = 1replacements)
-                    double element_A13 = AllowSequestration ? element.Element_GWP_A13 : element.Element_GWP_A13_noSeq;
-                    element.Element_B4_Nreplacements = (int)Math.Ceiling((decimal)(modelLifetime) / element.Element_ExpectedLifetime)-1;
-                    double b4_perTime = element_A13 + element.Element_A4 + element.Element_C + element.Element_D;
-                    element.Element_B4 = b4_perTime * (element.Element_B4_Nreplacements);
+                    if (element == null) continue;
+                    DataRow dr = elementsDataTable.NewRow();
+                    foreach (PropertyInfo info in typeof(LCA_Element).GetProperties())
+                    {
+                        dr[info.Name] = info.GetValue(element, null);
+                    }
+                    elementsDataTable.Rows.Add(dr);
                 }
+
             }
-        }
+            private void CalculateB4_allElements(ref List<LCA_Element> elements)
+            {
+                if (modelLifetime <= 0)
+                    return;
+
+                foreach (LCA_Element element in elements)
+                {
+                    if (element.Element_ExpectedLifetime > 0 && element.Element_ExpectedLifetime < modelLifetime)
+                    {
+
+                        // 40 / 40 = 1 (-1 = 0replacements)
+                        // 50 / 25 = 2 (-1 = 1replacements)
+                        // 50 / 30 = 2 (-1 = 1replacements)
+                        //find years to replace element
+                        element.Element_B4years.Clear();
+                        for (int i = element.Element_ExpectedLifetime; i < modelLifetime; i += element.Element_ExpectedLifetime)
+                        {
+                            element.Element_B4years.Add(i);
+                        }
+
+
+
+                        double element_A13 = AllowSequestration ? element.Element_GWP_A13 : element.Element_GWP_A13_noSeq;
+                        //element.Element_B4_Nreplacements = (int)Math.Ceiling((double)(modelLifetime) / element.Element_ExpectedLifetime)-1;
+                        element.Element_B4_Nreplacements = element.Element_B4years.Count();
+                    element.Element_B4perTime = element_A13 + element.Element_A4; // + element.Element_C + element.Element_D;
+                        element.Element_B4 = element.Element_B4perTime * (element.Element_B4_Nreplacements);
+
+
+                    }
+                }
+            } 
+        
 
 
         public void FilterDataTable(string filter, string filterColumn)
