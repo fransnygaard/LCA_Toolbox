@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
 
     public class LCA_Material_List

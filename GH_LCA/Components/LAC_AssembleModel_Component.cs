@@ -4,7 +4,7 @@ using GH_GeneralClassLibrary.UI;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
     public class LAC_AssembleModel_Component : GH_MyExtendableComponent
     {

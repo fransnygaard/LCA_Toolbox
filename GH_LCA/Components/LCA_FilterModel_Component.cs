@@ -7,7 +7,7 @@ using GH_GeneralClassLibrary.UI;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 
-namespace GH_LCA.Components
+namespace LCA_Toolbox.Components
 {
     public class LCA_FilterModel_Component : GH_MyExtendableComponent
     {

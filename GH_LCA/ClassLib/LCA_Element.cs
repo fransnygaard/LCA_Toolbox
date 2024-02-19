@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
     public class LCA_Element
     {

@@ -3,7 +3,7 @@ using Grasshopper.Kernel;
 using System;
 using System.Drawing;
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
     public class GH_LCAInfo : GH_AssemblyInfo
     {

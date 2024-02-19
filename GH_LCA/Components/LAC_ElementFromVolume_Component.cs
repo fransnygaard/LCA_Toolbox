@@ -7,7 +7,7 @@ using Rhino.Geometry;
 using GH_GeneralClassLibrary.UI;
 
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
     public class LAC_ElementFromVolume_Component : GH_MyExtendableComponent
     {

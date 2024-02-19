@@ -8,7 +8,7 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
     public class LCA_Material_Component : GH_MyExtendableComponent
     {

@@ -7,7 +7,7 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Special;
 using Grasshopper.Kernel.Types;
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
     public static class GH_LCA_Extentions
     {

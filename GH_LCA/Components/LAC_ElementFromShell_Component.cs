@@ -8,7 +8,7 @@ using GH_GeneralClassLibrary.UI;
 using Grasshopper.Kernel.Types;
 using GH_GeneralClassLibrary.Utils;
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
     public class LAC_ElementFromShell_Component : GH_MyExtendableComponent
     {

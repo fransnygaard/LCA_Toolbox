@@ -11,7 +11,7 @@ using System.Web;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
 
     public class LCA_Model

@@ -6,7 +6,7 @@ using Rhino.Geometry;
 using System;
 using System.Xml;
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
     public class LAC_ElementFromCurve_Component : GH_MyExtendableComponent
     {

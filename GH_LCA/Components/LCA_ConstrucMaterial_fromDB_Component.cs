@@ -11,7 +11,7 @@ using LCA_Toolbox.Database;
 
 namespace LCA_Toolbox
 {
-    public class LCA_ConstrucMaterial_Pyramiden_Component : GH_MyExtendableComponent
+    public class LCA_ConstrucMaterial_fromDB_Component : GH_MyExtendableComponent
     {
 
 
@@ -31,6 +31,9 @@ namespace LCA_Toolbox
         private string dropvariable_material = dropvariable_notSelected;
         private string dropvariable_category_SAVED = "--ALL--";
         private string dropvariable_material_SAVED = dropvariable_notSelected;
+        private string dbPath_SAVED = string.Empty;
+        private string db_Path = string.Empty;
+
         SqliteDataAcces sqliteDataAcces = new SqliteDataAcces("pyramiden");
 
         /// <summary>
@@ -40,8 +43,8 @@ namespace LCA_Toolbox
         /// Subcategory the panel. If you use non-existing tab or panel names, 
         /// new tabs/panels will automatically be created.
         /// </summary>
-        public LCA_ConstrucMaterial_Pyramiden_Component()
-          : base("LAC: Get material from Materialpyramiden.dk", "LAC: Get material from Materialpyramiden.dk",
+        public LCA_ConstrucMaterial_fromDB_Component()
+          : base("LAC: Get material from CustomDB", "LAC: Get material from CustomDB",
             "Description",
             Constants.PluginName,Constants.SubMaterials)
         {
@@ -53,7 +56,7 @@ namespace LCA_Toolbox
         public override bool Write(GH_IWriter writer)
 
         {
-
+            writer.SetString("dbPath_SAVED", sqliteDataAcces.Get_DB_path());
             writer.SetString("dropvariable_category", dropvariable_category);
             writer.SetString("dropvariable_material", dropvariable_material);
 
@@ -64,9 +67,12 @@ namespace LCA_Toolbox
         public override bool Read(GH_IReader reader)
 
         {
+            reader.TryGetString("dbPath_SAVED", ref dbPath_SAVED);
+            sqliteDataAcces.SetDB_path(dbPath_SAVED);
 
             reader.TryGetString("dropvariable_category", ref dropvariable_category_SAVED);
             reader.TryGetString("dropvariable_material", ref dropvariable_material_SAVED);
+            
 
             update_dropdown_category(true);
 
@@ -167,7 +173,9 @@ namespace LCA_Toolbox
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            inputIndexCounter_Reset();
+            pManager.AddTextParameter("Database file path", "DB", "", GH_ParamAccess.item);
+
+            registrerInputParams(pManager);
         }
 
         /// <summary>
@@ -175,10 +183,12 @@ namespace LCA_Toolbox
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            outputIndexCounter_Reset();
 
             pManager.AddGenericParameter(Constants.Material.Name, Constants.Material.NickName, Constants.Material.Discription, GH_ParamAccess.item); // 0
-            outputParams.Add(pManager[pManager.ParamCount - 1].Name, IndexCounter);
+
+            pManager.AddTextParameter("DB-path", "p", "", GH_ParamAccess.item);
+
+            registrerOutputParams(pManager);
 
         }
 
@@ -201,11 +211,13 @@ namespace LCA_Toolbox
 
             string selectedMaterial = string.Empty;
             
+            string path = string.Empty;
+            DA.GetData<string>(inputParams["Database file path"], ref path);
+            sqliteDataAcces.SetDB_path(path);
 
 
             LCA_Material material;
 
-           // SqliteDataAcces sqliteDataAcces = new SqliteDataAcces("pyramiden");
 
             if (sqliteDataAcces.GetMaterialByName(get_dropvariable_material, out material))
             {
@@ -213,13 +225,7 @@ namespace LCA_Toolbox
 
 
 
-                //double _tempNR = 0;
-
-                //if (DA.GetData(1, ref _tempNR)) { material.A4_A5 = _tempNR; }
-                //if (DA.GetData(2, ref _tempNR)) { material.C = _tempNR; }
-                //if (DA.GetData(3, ref _tempNR)) { material.D = _tempNR; }
-
-                material.DataSource = "MaterialPytamiden.dk";
+                material.DataSource = "CustomDB";
 
             }
             else
@@ -233,22 +239,6 @@ namespace LCA_Toolbox
 
             DA.SetData(0, material);
 
-            //DA.SetData(1, material.Name);
-            //DA.SetData(2, material.Category);
-            //DA.SetData(3, material.Description);
-            //DA.SetData(4, material.Density);
-            //DA.SetData(5, material.Insulation);
-            //DA.SetData(6, material.GWP);
-            //DA.SetData(7, material.ODP);
-            //DA.SetData(8, material.POCP);
-            //DA.SetData(9, material.EP);
-            //DA.SetData(10, material.AP);
-            //DA.SetData(11, material.A4_A5);
-            //DA.SetData(12, material.C);
-            //DA.SetData(13, material.D);
-            //DA.SetData(14, material.DataSource);
-
-            //DA.SetData(15, material.MaterialGUID);
 
         }
 
@@ -269,7 +259,7 @@ namespace LCA_Toolbox
         /// It is vital this Guid doesn't change otherwise old ghx files 
         /// that use the old ID will partially fail during loading.
         /// </summary>
-        public override Guid ComponentGuid => new Guid("63F5C8D5-7E8B-4DE3-A162-32341C5CDB36");
+        public override Guid ComponentGuid => new Guid("54b71851-ed84-4f52-95ee-9bfd435b5d5a");
 
 
 
