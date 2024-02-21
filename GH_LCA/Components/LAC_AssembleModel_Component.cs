@@ -25,9 +25,9 @@ namespace LCA_Toolbox
         {
             pManager.AddGenericParameter(Constants.Elements.Name, Constants.Elements.NickName, Constants.Elements.Discription, GH_ParamAccess.list);
 
-            pManager.AddNumberParameter(Constants.GWP_B6.Name, Constants.GWP_B6.NickName, Constants.GWP_B6.Discription, GH_ParamAccess.item,0.0);
+            pManager.AddNumberParameter(Constants.B6_Year.Name, Constants.B6_Year.NickName, Constants.B6_Year.Discription, GH_ParamAccess.item,0);
 
-            pManager.AddIntegerParameter(Constants.Lifetime.Name,Constants.Lifetime.NickName, Constants.Lifetime.Discription, GH_ParamAccess.item, -1);//1
+            pManager.AddIntegerParameter(Constants.Lifetime.Name,Constants.Lifetime.NickName, Constants.Lifetime.Discription, GH_ParamAccess.item, -1);
             
             
             registrerInputParams(pManager);
@@ -41,6 +41,7 @@ namespace LCA_Toolbox
 
             pManager.AddGenericParameter(Constants.Model.Name, Constants.Model.NickName,Constants.Model.Discription, GH_ParamAccess.item);
             pManager.AddNumberParameter(Constants.GWP_TOTAL.Name, Constants.GWP_TOTAL.NickName, Constants.GWP_TOTAL.Discription, GH_ParamAccess.item);
+
             registrerOutputParams(pManager);
         }
 
@@ -51,30 +52,35 @@ namespace LCA_Toolbox
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             List<string> debugLog = new List<string>();
-            List<LCA_Element> elements = new List<LCA_Element>();
 
-            if (!DA.GetDataList(Constants.Elements, elements)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No Elements found !"); return; }
+
+
+            List<LCA_Element> elements = new List<LCA_Element>();
+            if (!DA.GetDataList(inputParams[Constants.Elements], elements)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No Elements found !"); return; }
             if (elements[0] == null) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No Elements found"); return; }
 
-            double GWP_B6_perYear = default;
-            DA.GetData<double>(inputParams[Constants.GWP_B6], ref GWP_B6_perYear);
+
+            double B6_perYear = 0;
+            DA.GetData(inputParams[Constants.B6_Year], ref B6_perYear);
+
 
             int modelifetime = -1;
             DA.GetData<int>(inputParams[Constants.Lifetime], ref modelifetime);
 
-            LCA_Model model = new LCA_Model(elements, modelifetime, GWP_B6_perYear);
+            LCA_Model model = new LCA_Model(elements, modelifetime, B6_perYear);
 
-           // debugLog.Add(model.elementsDataTable.ToString());
+
+
+
+            debugLog.Add(model.elementsDataTable.ToString());
 
 
 
 
             //SET DATA
+            DA.SetData(outputParams[Constants.Model], model);
 
-            //DEBUG
-            DA.SetData(outputParams[Constants.Model.Name], model);
-
-            DA.SetData(Constants.GWP_TOTAL.Name, model.GetGWPAllStages());
+            DA.SetData(outputParams[Constants.GWP_TOTAL], model.GetGWPAllStages());
 
 
 

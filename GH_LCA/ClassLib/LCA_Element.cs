@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Grasshopper.Kernel.Types;
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
@@ -7,21 +8,21 @@ namespace LCA_Toolbox
 {
     public class LCA_Element
     {
-
-        public string ElementGUID { get; set; }
+        public IGH_GeometricGoo geoGoo { get; set; }
         public LCA_Material Material { get; set; }
 
         //Used to calculate B4 (Replacement)
-        public int Element_ExpectedLifetime { get; set; }
+        public int Element_Lifetime { get; set; }
 
         //Number of B4 replacements , caclulated at model level
         public int Element_B4_Nreplacements { get; set; }
-        public double Element_B4 { get; set; }
+        public double Element_B4_Sum { get; set; }
 
         public List<int> Element_B4years { get; set; }
         public double Element_B4perTime { get; set; }
-        
 
+        public double element_A4_perKG = 0;
+        public double Element_D_ReusePercent { get; set; }
 
         public string Element_Name { get; set; }
         public string Element_Group { get; set; }
@@ -30,14 +31,12 @@ namespace LCA_Toolbox
         {
             Element_Volume = volume;
             Material = material;
-            Element_ExpectedLifetime = expectedLifetime;
+            Element_Lifetime = expectedLifetime;
 
             Element_B4_Nreplacements = 0;
-            Element_B4 = 0;
+            Element_B4_Sum = 0;
             Element_B4perTime = 0;
             Element_B4years = new List<int>();
-
-            ElementGUID = Guid.NewGuid().ToString();
         }
 
         public LCA_Element()
@@ -47,7 +46,7 @@ namespace LCA_Toolbox
         public bool isValid()
         {
             if(Material == null) return false;
-            if(Element_Volume == 0) return false;
+            if(Element_Volume <= 0) return false;
 
             return true;
         }
@@ -62,19 +61,18 @@ namespace LCA_Toolbox
 
         public double Element_Volume { get; set; }
 
-        //A1 - A3
-        public double Element_GWP_A13
+        public double Element_A1toA3
         {
             get
             {
                 return Element_Volume * Material.A1toA3;
             }
         }
-        public double Element_GWP_A13_noSeq
+        public double Element_A1toA3_noSeq
         {
             get
             {
-                return Math.Max(Element_GWP_A13, 0);
+                return Math.Max(Element_A1toA3, 0);
             }
         }
         public double Element_ODP
@@ -110,7 +108,7 @@ namespace LCA_Toolbox
         {
             get
             {
-                double cost = Material.A4 * Element_Weight;
+                double cost = element_A4_perKG * Element_Weight;
                 if (cost > 0)
                     return cost;
                 else
@@ -129,17 +127,9 @@ namespace LCA_Toolbox
                     return 0;
             }
         }
-        public double Element_D
-        {
-            get
-            {
-                double cost = Material.D * Element_Weight;
-                if (cost > 0)
-                    return cost;
-                else
-                    return 0;
-            }
-        }
+
+        //public double element_D_prosentage = 0;
+
 
         public double Element_Weight
         {

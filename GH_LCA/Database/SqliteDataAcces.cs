@@ -65,7 +65,7 @@ namespace LCA_Toolbox.Database
         public string GetPathPytamidenDB_path()
         {
             string folder_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string path = $@"{folder_path}\materialDB_20240130.db";
+            string path = $@"{folder_path}\materialDB_20240220.db";
             return path;
 
         }
@@ -97,8 +97,8 @@ namespace LCA_Toolbox.Database
                 using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
                 {
                     string sql = overwrite ? "REPLACE INTO " : "INSERT INTO ";
-                    sql += $"materials (name,category,density,GWP,ODB,POCP,EP,AP) VALUES ('{material.Name}','{material.Category}','{material.Density}','{material.GWP}','{material.ODP}','{material.POCP}','{material.EP}','{material.AP}')";
-                    //if (overwrite) sql += $" ON DUPLICATE KEY UPDATE `name`=VALUES(`name`)";
+                    sql += $"materials (name,category,density,insulation,description,A1_A3,ODB,POCP,EP,AP,C1_C4,DataSource,Notes)" +
+                        $" VALUES ('{material.Name}','{material.Category}','{material.Density}','{material.A1toA3}','{material.Insulation}','{material.Description}','{material.ODP}','{material.POCP}','{material.EP}','{material.AP}','{material.C1toC4}','{material.DataSource}','{material.Notes}')";
 
 
                     cnn.Execute(sql);

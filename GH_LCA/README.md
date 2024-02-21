@@ -27,3 +27,18 @@ TO DO:
 
 	-Filter results. 
 		.
+
+
+
+		move A4 from material to element
+
+
+
+
+		FIX 21022024
+			values not from db . 
+						insulation  - fix in scraper
+
+
+		Construct element output
+				add a4 to A1-A3

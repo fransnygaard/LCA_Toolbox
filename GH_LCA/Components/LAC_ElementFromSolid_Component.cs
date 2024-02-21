@@ -31,8 +31,13 @@ namespace LCA_Toolbox
            
             pManager.AddGenericParameter(Constants.Material.Name, Constants.Material.NickName, Constants.Material.Discription, GH_ParamAccess.item);
             
-
             pManager.AddIntegerParameter(Constants.Lifetime.Name,Constants.Lifetime.NickName, Constants.Lifetime.Discription, GH_ParamAccess.item,-1);
+
+            pManager.AddNumberParameter(Constants.A4_kg.Name, Constants.A4_kg.NickName, Constants.A4_kg.Discription, GH_ParamAccess.item);
+            pManager[pManager.ParamCount - 1].Optional = true;
+
+            pManager.AddNumberParameter(Constants.D_Reuse.Name, Constants.D_Reuse.NickName, Constants.D_Reuse.Discription, GH_ParamAccess.item);
+            pManager[pManager.ParamCount - 1].Optional = true;
 
             pManager.AddTextParameter(Constants.Element_Name.Name, Constants.Element_Name.NickName, Constants.Element_Name.Discription, GH_ParamAccess.item);
             pManager[pManager.ParamCount - 1].Optional = true; 
@@ -56,7 +61,7 @@ namespace LCA_Toolbox
 
             pManager.AddNumberParameter(Constants.Weight.Name, Constants.Weight.NickName, Constants.Weight.Discription, GH_ParamAccess.item);
            
-            pManager.AddNumberParameter(Constants.GWP_ELEMENT.Name, Constants.GWP_ELEMENT.NickName, Constants.GWP_ELEMENT.Discription, GH_ParamAccess.item);
+            pManager.AddNumberParameter(Constants.A1toA3_ELEMENT.Name, Constants.A1toA3_ELEMENT.NickName, Constants.A1toA3_ELEMENT.Discription, GH_ParamAccess.item);
 
             registrerOutputParams(pManager);
         }
@@ -78,6 +83,8 @@ namespace LCA_Toolbox
             IGH_GeometricGoo inputGeo = default;
             if (!DA.GetData<IGH_GeometricGoo>(inputParams[Constants.SolidGeo.Name], ref inputGeo)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "no valid input geometry"); return; }
 
+            
+            
             double volume_RU = -1; //Volume in rhino units.
             Mesh mesh = null;
             Brep brep = null;
@@ -111,25 +118,39 @@ namespace LCA_Toolbox
             { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No valid geometry"); return; }
 
 
+
+
+            //CALCULATE VOLUME
             double volume = LCA_HelperCalss.convertCubedValueToMeters(volume_RU);
             if (volume == double.NaN) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Rhino units needs to be mm, cm or m"); return; }
 
 
             int expectedLifetime = -1;
             DA.GetData<int>(Constants.Lifetime.Name, ref expectedLifetime);
+
+
             LCA_Element element = new LCA_Element(material, volume, expectedLifetime);
+            element.geoGoo = inputGeo;
+
 
             string _tempStr = string.Empty;
+            double _tempNr = double.NaN;
             if (DA.GetData(inputParams[Constants.Element_Name], ref _tempStr)) { element.Element_Name = _tempStr; }
             if (DA.GetData(inputParams[Constants.Element_Group], ref _tempStr)) { element.Element_Group = _tempStr; }
 
+            if (DA.GetData(inputParams[Constants.A4_kg], ref _tempNr)) { element.element_A4_perKG = _tempNr; }
 
 
+
+
+
+
+            //SET DATA
 
             DA.SetData(outputParams[Constants.Element], element);
             DA.SetData(outputParams[Constants.Volume], element.Element_Volume);
             DA.SetData(outputParams[Constants.Weight], element.Element_Weight);
-            DA.SetData(outputParams[Constants.GWP_ELEMENT], element.Element_GWP_A13);
+            DA.SetData(outputParams[Constants.A1toA3_ELEMENT], element.Element_A1toA3);
 
 
         }

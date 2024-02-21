@@ -43,7 +43,7 @@ namespace LCA_Toolbox
             pManager.AddGenericParameter(Constants.Model.Name, Constants.Model.NickName, Constants.Model.Discription, GH_ParamAccess.item);
 
             pManager.AddTextParameter("List names by material", "List names by material", "", GH_ParamAccess.list); //1
-            pManager.AddNumberParameter(Constants.GWP_A1_A3.Name, "SUM GWP[kg CO2eq]", "", GH_ParamAccess.item); //2
+            pManager.AddNumberParameter(Constants.A1toA3_m3.Name, "SUM GWP[kg CO2eq]", "", GH_ParamAccess.item); //2
             pManager.AddNumberParameter("List GWP [kg CO2eq] by material", "List GWP [kg CO2eq] by material", "", GH_ParamAccess.list); //3
             pManager.AddNumberParameter("List GWP [%] by material", "List GWP [%] by material", "", GH_ParamAccess.list); //4
             pManager.AddNumberParameter("SUM Weight [kg]", "SUM Weight [kg]", "", GH_ParamAccess.item); //5
@@ -92,9 +92,9 @@ namespace LCA_Toolbox
             DA.SetData(outputParams[Constants.Model.Name], model);
 
             DA.SetDataList(1, model.ListUniqueMaterialNames());
-            DA.SetData(2, model.GetColumnSum("Element_GWP_A13"));
-            DA.SetDataList(3, model.GetColumnSum_ListByMaterial("Element_GWP_A13"));
-            DA.SetDataList(4, model.GetColumnPercentage_ListByMaterial("Element_GWP_A13"));
+            DA.SetData(2, model.GetColumnSum("Element_A1toA3"));
+            DA.SetDataList(3, model.GetColumnSum_ListByMaterial("Element_A1toA3"));
+            DA.SetDataList(4, model.GetColumnPercentage_ListByMaterial("Element_A1toA3"));
             DA.SetData(5, model.GetColumnSum("Element_Weight"));
             DA.SetDataList(6, model.GetColumnSum_ListByMaterial("Element_Weight"));
             DA.SetDataList(7, model.GetColumnPercentage_ListByMaterial("Element_Weight"));
@@ -104,20 +104,20 @@ namespace LCA_Toolbox
 
 
             //A1-A3
-            DA.SetData(11, model.GetColumnSum("Element_GWP_A13"));
+            DA.SetData(11, model.GetColumnSum("Element_A1toA3"));
 
             //A4
             DA.SetData(12, model.GetColumnSum("Element_A4"));
 
             //B4
-            DA.SetData(13, model.GetColumnSum("Element_B4"));
+            DA.SetData(13, model.GetColumnSum("Element_B4_Sum"));
 
 
             //C
-            DA.SetData(14, model.GetColumnSum("Element_C"));
+            //DA.SetData(14, model.GetColumnSum("Element_C"));
 
             //D
-            DA.SetData(15, model.GetColumnSum("Element_D"));
+           // DA.SetData(15, model.GetColumnSum("Element_D"));
 
 
 

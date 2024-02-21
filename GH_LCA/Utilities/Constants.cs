@@ -88,6 +88,8 @@ namespace LCA_Toolbox
         {
             get { return new Descriptor("Folder", "/folder", "use the filepath component to select a local or network folder"); }
         }
+
+
         public static Descriptor Model
         {
             get { return new Descriptor("Model", "M", ""); }
@@ -112,6 +114,10 @@ namespace LCA_Toolbox
         {
             get { return new Descriptor("Material", "Mat", ""); }
         }
+        public static Descriptor Materials
+        {
+            get { return new Descriptor("Materials[]", "Mat[]", ""); }
+        }
         public static Descriptor Mat_Name
         {
             get { return new Descriptor("Material Name", "N", "Material name. Shows up in reports and can be used for filtering"); }
@@ -126,63 +132,144 @@ namespace LCA_Toolbox
             get { return new Descriptor("Description", "D", "Material Description"); }
         }
 
-
-
         public static Descriptor Density
         {
-            get { return new Descriptor("Density[kg / m3]", "D", "Material density messured in kg/m3. This must be a positive value"); }
+            get { return new Descriptor("Density [kg / m3]", "D", "Material density messured in kg/m3. This must be a positive value"); }
 
         }
 
         public static Descriptor Insulation
         {
-            get { return new Descriptor("Insulation[W / m2 / K]", "Iso", "Thermal conductivity (lambda) of the material, usage not yet implemented..."); }
+            get { return new Descriptor("Insulation [W / m2 / K]", "Iso", "Thermal conductivity (lambda) of the material, usage not yet implemented..."); }
 
         }
-        public static Descriptor GWP_A1_A3
+
+
+
+
+
+
+
+        #region LCA STAGES
+        public static Descriptor A1toA3_m3
         {
-            get { return new Descriptor("GWP[kg CO2eq / m3] A1-A3", "GWP A1-A3", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2).\n This is for stages A1 to A3"); }
+            get { return new Descriptor("A1-A3: Product stage [kg CO2eq / m3]", "A1-A3 per m3",
+                "Stage A1-A3: Product stage (Cradle to Gate)" +
+                "\n Global warming potential (CO2eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
+                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)");
+            }
 
         }
-
-        public static Descriptor GWP_B6
+        public static Descriptor A1toA3_ELEMENT
         {
-            get { return new Descriptor("B6 [kg CO2eq / year]", "B6", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2).\n This is for stage B6 Operational Energy"); }
+            get { return new Descriptor("A1-A3: Product stage [kg CO2eq / element]", "A1-A3 per element",
+                 "Stage A1-A3: Product stage (Cradle to Gate)" +
+                "\n Global warming potential (CO2eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
+                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)");
+            }
 
         }
-        public static Descriptor GWP_ELEMENT
+        public static Descriptor A4_kg
         {
-            get { return new Descriptor("Element A1-A3[kg CO2eq]", "Element A1-A3", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)."); }
+            get
+            {
+                return new Descriptor("A4: Transportation to site [kg CO2eq / kg]", "A4 per kg",
+                "Stage A4: Transportation to site " +
+                "\n Global warming potential (CO2eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
+                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)");
+
+            }
+        }
+
+        //A5 Construction and instalation prosess
+
+        public static Descriptor B6_Year
+        {
+            get
+            {
+                return new Descriptor("B6: Operational energy [kg CO2eq / year]", "B6 per year",
+                "Stage B6: Operational energy" +
+                "\n Global warming potential (CO2eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
+                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)");
+            }
+        }
+        public static Descriptor C1_C4
+        {
+            get { return new Descriptor("C1-C4: End of life [kg CO2eq / m3]", "C1-C4", "??"); }
 
         }
+        public static Descriptor D_Reuse
+        {
+            get { return new Descriptor("D: Reuse factor", "D", "Factor of reuse from 0.0 to 1.0"); }
+
+        }
+
+        #endregion  LCA STAGES
+
+
+
+
+
+
+
         public static Descriptor GWP_TOTAL
         {
-            get { return new Descriptor("GWP [kg CO2eq] Total", "GWP_Total", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)."); }
+            get { return new Descriptor("GWP Total [kg CO2eq] ", "GWP_Total", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)."); }
              
         }
         public static Descriptor ODP
         {
-            get { return new Descriptor("ODP[R11 eq / m3]", "ODP", "Ozone depletion potential (ODP)\n of a chemical compound is the relative amount of degradation to the ozone layer it can cause, with trichlorofluoromethane (R-11 or CFC-11) being fixed at an ODP of 1.0."); }
+            get { return new Descriptor("ODP [R11 eq / m3]", "ODP", "Ozone depletion potential (ODP)\n of a chemical compound is the relative amount of degradation to the ozone layer it can cause, with trichlorofluoromethane (R-11 or CFC-11) being fixed at an ODP of 1.0."); }
+
+        }
+        /// <summary>
+        /// /
+        /// </summary>
+        public static Descriptor POCP
+        {
+            get { return new Descriptor("POCP", "POCP", " ???"); }
+
+        }
+        public static Descriptor EP
+        {
+            get { return new Descriptor("EP", "EP", "??"); }
+
+        }
+        public static Descriptor AP
+        {
+            get { return new Descriptor("AP", "AP", "??"); }
+
+        }
+       
+        public static Descriptor DataSource
+        {
+            get { return new Descriptor("DataSource", "DataSource", ""); }
 
         }
 
+        public static Descriptor Notes
+        {
+            get { return new Descriptor("Notes", "Notes", ""); }
 
-
+        }
+        /// <summary>
+        /// //
+        /// </summary>
 
         public static Descriptor Lifetime
         {
-            get { return new Descriptor("Expected lifetime [years]", "Lifetime", "This is the expected lifetime of this element before it has to be replaced. At end of life ... D + new A1-4 \n a value og -1 means infinite life."); }
+            get { return new Descriptor("Expected lifetime [years]", "lifetime", "This is the expected lifetime of this element before it has to be replaced. At end of life ... D + new A1-4 \n a value og -1 means infinite life."); }
 
         }
 
         public static Descriptor Weight
         {
-            get { return new Descriptor("Weight[kg]", "kg", "Total weight in kilograms [kg]"); }
+            get { return new Descriptor("Weight [kg]", "kg", "Total weight in kilograms [kg]"); }
 
         }
         public static Descriptor Volume
         {
-            get { return new Descriptor("Volume[m3]", "m3", "Total volume in cubic meters [m3]."); }
+            get { return new Descriptor("Volume [m3]", "m3", "Total volume in cubic meters [m3]."); }
 
         }
 

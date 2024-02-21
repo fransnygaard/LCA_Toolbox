@@ -6,12 +6,12 @@ using Rhino.Geometry;
 
 namespace LCA_Toolbox
 {
-    public class LCA_DeconstructElement_Component : GH_Component
+    public class LCA_DeconstructElement_Component_OBSOLETE : GH_Component
     {
         /// <summary>
         /// Initializes a new instance of the LCA_DeconstructElement_Component class.
         /// </summary>
-        public LCA_DeconstructElement_Component()
+        public LCA_DeconstructElement_Component_OBSOLETE()
           : base("LCA: Deconstruct Element", "LCA: Deconstruct Element",
               "Description",
               Constants.PluginName, Constants.SubElements)
@@ -44,7 +44,7 @@ namespace LCA_Toolbox
             pManager.AddIntegerParameter("Element_ExpectedLifetime", "Element_ExpectedLifetime", "", GH_ParamAccess.item);
             
             //5
-            pManager.AddNumberParameter(Constants.GWP_A1_A3.Name, Constants.GWP_A1_A3.NickName, Constants.GWP_A1_A3.Discription, GH_ParamAccess.item);
+            pManager.AddNumberParameter(Constants.A1toA3_m3.Name, Constants.A1toA3_m3.NickName, Constants.A1toA3_m3.Discription, GH_ParamAccess.item);
             
             //6
             pManager.AddNumberParameter("Element_ODP", "Element_ODP", "", GH_ParamAccess.item);
@@ -93,9 +93,9 @@ namespace LCA_Toolbox
             DA.SetData(0, element.Material);
             DA.SetData(1, element.Element_Name);
             DA.SetData(2, element.Element_Group);
-            DA.SetData(3, element.ElementGUID);
-            DA.SetData(4, element.Element_ExpectedLifetime);
-            DA.SetData(5, element.Element_GWP_A13);
+           // DA.SetData(3, element.ElementGUID);
+            DA.SetData(4, element.Element_Lifetime);
+            DA.SetData(5, element.Element_A1toA3);
             DA.SetData(6, element.Element_ODP);
             DA.SetData(7, element.Element_POCP);
             DA.SetData(8, element.Element_EP);
@@ -103,9 +103,9 @@ namespace LCA_Toolbox
             DA.SetData(10, element.Element_A4);
             DA.SetData(11, element.Element_Weight);
             DA.SetData(12, element.Element_B4_Nreplacements);
-            DA.SetData(13, element.Element_B4);
+            DA.SetData(13, element.Element_B4_Sum);
             DA.SetData(14, element.Element_C);
-            DA.SetData(15, element.Element_D);
+            DA.SetData(15, element.Element_D_ReusePercent);
 
 
 

@@ -40,21 +40,14 @@ namespace LCA_Toolbox
             EP = other.EP;
             AP = other.AP;
 
-            //A1toA3 = other.A1toA3;
-            //A4 = other.A4;
-            // C1toC4 = other.C1toC4;
-            //D = other.D;
-
             DataSource = other.DataSource;
-            MaterialGUID = Guid.NewGuid().ToString();
-
+            Notes = other.Notes;
         }
 
 
         public LCA_Material()
         {
             dt = getNewMaterialDataTable();
-            MaterialGUID = Guid.NewGuid().ToString();
         }
 
 
@@ -62,16 +55,16 @@ namespace LCA_Toolbox
         {
             DataTable rtnD = new DataTable();
             rtnD.Columns.Add(new DataColumn("A1-A3", typeof(double))); //Production phase
-            rtnD.Columns.Add(new DataColumn("A4", typeof(double))); //Trasport to site
-            rtnD.Columns.Add(new DataColumn("A5", typeof(double))); //Trasport to site
-            rtnD.Columns.Add(new DataColumn("B1", typeof(double))); //Use
-            rtnD.Columns.Add(new DataColumn("B2", typeof(double))); //Maintenence
-            rtnD.Columns.Add(new DataColumn("B3", typeof(double))); //Repair
-            rtnD.Columns.Add(new DataColumn("B4", typeof(double))); //Replacement
-            rtnD.Columns.Add(new DataColumn("B5", typeof(double))); //Refurbishment
-            rtnD.Columns.Add(new DataColumn("B6", typeof(double))); //operational energy
+            //rtnD.Columns.Add(new DataColumn("A4", typeof(double))); //Trasport to site
+            //rtnD.Columns.Add(new DataColumn("A5", typeof(double))); //Trasport to site
+            //rtnD.Columns.Add(new DataColumn("B1", typeof(double))); //Use
+            //rtnD.Columns.Add(new DataColumn("B2", typeof(double))); //Maintenence
+            //rtnD.Columns.Add(new DataColumn("B3", typeof(double))); //Repair
+            //rtnD.Columns.Add(new DataColumn("B4", typeof(double))); //Replacement
+            //rtnD.Columns.Add(new DataColumn("B5", typeof(double))); //Refurbishment
+            //rtnD.Columns.Add(new DataColumn("B6", typeof(double))); //operational energy
             rtnD.Columns.Add(new DataColumn("C1-C4", typeof(double))); // End of life
-            rtnD.Columns.Add(new DataColumn("D", typeof(double))); //Beyond lifetime
+            //rtnD.Columns.Add(new DataColumn("D", typeof(double))); //Beyond lifetime
 
             foreach (DataColumn col in rtnD.Columns)
             {
@@ -104,31 +97,18 @@ namespace LCA_Toolbox
         }
 
         public string Description { get; set; }
-
-        //Density [kg/m3]
         public double Density { get; set; }
-
         public double Insulation { get; set; }
-
-        //GWP [kg CO2 eq / m3 ]
         public double A1toA3 { get { return (double)dt.Rows[0]["A1-A3"]; } set { dt.Rows[0]["A1-A3"] = value; } }
-        public double GWP { get { return (double)dt.Rows[0]["A1-A3"]; } set { dt.Rows[0]["A1-A3"] = value; } }
-
-
         public double ODP { get; set; }
         public double POCP { get; set; }
         public double EP { get; set; }
         public double AP { get; set; }
-
-
-        // TravelDistance to calculate A4 cost
-        public double A4 { get { return (double)dt.Rows[0]["A4"]; } set { dt.Rows[0]["A4"] = value; } }
-
         public double C1toC4 { get { return (double)dt.Rows[0]["C1-C4"]; } set { dt.Rows[0]["C1-C4"] = value; } }
-
-        public double D { get { return (double)dt.Rows[0]["D"]; } set { dt.Rows[0]["D"] = value; } }
-
+        //public double D { get { return (double)dt.Rows[0]["D"]; } set { dt.Rows[0]["D"] = value; } }
         public string DataSource { get; set; }
-        public string MaterialGUID{ get; set; }
+        public string Notes { get; set; }
+
+
     }
 }

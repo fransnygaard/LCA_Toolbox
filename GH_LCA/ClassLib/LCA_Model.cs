@@ -22,9 +22,9 @@ namespace LCA_Toolbox
 
         public bool AllowSequestration = true;
         int modelLifetime { get; set; }
-        public double model_GWP_B6_perYear { get; set; }
+        public double model_B6_perYear { get; set; }
 
-        List<string> listofAllGWPstages = new List<string> { "Element_GWP_A13", "Element_A4", "Element_B4", "Element_C", "Element_D" };
+        List<string> listofAllGWPstages = new List<string> { "Element_A1toA3", "Element_A4", "Element_B4_Sum", "Element_C" };
 
 
         protected LCA_Model(LCA_Model other)
@@ -35,7 +35,7 @@ namespace LCA_Toolbox
 
             this.AllowSequestration = other.AllowSequestration;
             this.modelLifetime = other.modelLifetime;   
-            this.model_GWP_B6_perYear = other.model_GWP_B6_perYear;
+            this.model_B6_perYear = other.model_B6_perYear;
 
         }
 
@@ -43,14 +43,15 @@ namespace LCA_Toolbox
         {
             return new LCA_Model(this);
         }
-        public LCA_Model(List<LCA_Element> elements,int _lifetime, double B6_perYear)
+
+        public LCA_Model(List<LCA_Element> elements, int _lifetime, double B6_perYears)
         {
             modelLifetime = _lifetime;
             if (elements[0] != null)
                 CalculateB4_allElements(ref elements);
                 CreateDataTableFromListOfElements(elements);
 
-            model_GWP_B6_perYear = B6_perYear;
+            model_B6_perYear = B6_perYears;
 
             timeline = ConstructTimelineDataTable();
         }
@@ -80,13 +81,13 @@ namespace LCA_Toolbox
             {
                 DataRow row = rtnDT.NewRow();
 
-                row.SetField("B6", model_GWP_B6_perYear);
+                row.SetField("B6", model_B6_perYear);
 
                 rtnDT.Rows.Add(row);
             }
 
             // Set Year 0
-            rtnDT.Rows[0].SetField("A1-A3", GetColumnSum("Element_GWP_A13"));
+            rtnDT.Rows[0].SetField("A1-A3", GetColumnSum("Element_A1toA3"));
             rtnDT.Rows[0].SetField("A4", GetColumnSum("Element_A4"));
 
             //Set B4 replacements
@@ -97,7 +98,8 @@ namespace LCA_Toolbox
                 {
                     rtnDT.Rows[year].SetField("B4", (double)rtnDT.Rows[0]["B4"] + (double)element["Element_B4perTime"]);
                     rtnDT.Rows[year].SetField("C1-C4", (double)rtnDT.Rows[0]["C1-C4"] + (double)element["Element_C"]);
-                    rtnDT.Rows[year].SetField("D", (double)rtnDT.Rows[0]["D"] + (double)element["Element_D"]);
+                    // REUSE NOT IMPLEMENTED
+                    //rtnDT.Rows[year].SetField("D", (double)rtnDT.Rows[0]["D"] + (double)element["Element_D"]);
                 }
             }
 
@@ -105,7 +107,8 @@ namespace LCA_Toolbox
             // Set Year n
 
             rtnDT.Rows[modelLifetime-1].SetField("C1-C4", GetColumnSum("Element_C"));
-            rtnDT.Rows[modelLifetime-1].SetField("D", GetColumnSum("Element_D"));
+            // REUSE NOT IMPLEMENTED
+            //rtnDT.Rows[modelLifetime-1].SetField("D", GetColumnSum("Element_D"));
 
             return rtnDT;
 
@@ -141,7 +144,7 @@ namespace LCA_Toolbox
 
                 foreach (LCA_Element element in elements)
                 {
-                    if (element.Element_ExpectedLifetime > 0 && element.Element_ExpectedLifetime < modelLifetime)
+                    if (element.Element_Lifetime > 0 && element.Element_Lifetime < modelLifetime)
                     {
 
                         // 40 / 40 = 1 (-1 = 0replacements)
@@ -149,18 +152,18 @@ namespace LCA_Toolbox
                         // 50 / 30 = 2 (-1 = 1replacements)
                         //find years to replace element
                         element.Element_B4years.Clear();
-                        for (int i = element.Element_ExpectedLifetime; i < modelLifetime; i += element.Element_ExpectedLifetime)
+                        for (int i = element.Element_Lifetime; i < modelLifetime; i += element.Element_Lifetime)
                         {
                             element.Element_B4years.Add(i);
                         }
 
 
 
-                        double element_A13 = AllowSequestration ? element.Element_GWP_A13 : element.Element_GWP_A13_noSeq;
+                        double element_A13 = AllowSequestration ? element.Element_A1toA3 : element.Element_A1toA3_noSeq;
                         //element.Element_B4_Nreplacements = (int)Math.Ceiling((double)(modelLifetime) / element.Element_ExpectedLifetime)-1;
                         element.Element_B4_Nreplacements = element.Element_B4years.Count();
                     element.Element_B4perTime = element_A13 + element.Element_A4; // + element.Element_C + element.Element_D;
-                        element.Element_B4 = element.Element_B4perTime * (element.Element_B4_Nreplacements);
+                        element.Element_B4_Sum = element.Element_B4perTime * (element.Element_B4_Nreplacements);
 
 
                     }
@@ -243,8 +246,8 @@ namespace LCA_Toolbox
 
         private void AdjustColumnForAllowSequestration(ref string column)
         {
-            if (!AllowSequestration && column == "Element_GWP_A13")
-                column = "Element_GWP_A13_noSeq";
+            if (!AllowSequestration && column == "Element_A1toA3")
+                column = "Element_A1toA3_noSeq";
         }
 
         public List<double> GetColumnSum_ListByMaterial(string column)
