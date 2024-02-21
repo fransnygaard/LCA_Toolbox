@@ -9,7 +9,7 @@ using Rhino.Geometry;
 using GH_GeneralClassLibrary.Utils;
 using GH_GeneralClassLibrary.UI;
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
     public class CurveBoolean_Component : GH_MyExtendableComponent
     {

@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using GH_LCA;
+using LCA_Toolbox;
 using Grasshopper.Kernel;
 using System;
 using System.Collections.Generic;
@@ -8,12 +8,119 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Reflection;
 using System.IO;
+using System.Data.SqlClient;
+using System.Data.Common;
+//using static Grasshopper.DataTree<T>;
 
 namespace LCA_Toolbox.Database
 {
     public class SqliteDataAcces
     {
-        public static List<string> GetMaterialGroups()
+        string db_path = string.Empty;
+
+
+
+        #region INIT 
+        public SqliteDataAcces(string _db_path)
+        {
+            if (_db_path == "pyramiden")
+            {
+                this.db_path = GetPathPytamidenDB_path();
+            }
+            else
+            {
+
+                this.db_path = _db_path;
+            }
+
+
+        }
+        public SqliteDataAcces(string folder_path,string _dbName)
+        {
+            string _db_path = $@"{folder_path}\{_dbName}";
+            this.db_path = _db_path;
+        }
+        public SqliteDataAcces()
+        {
+        }
+
+        #endregion INIT
+
+        #region ConnectionString
+        public void SetDB_path(string folder_path, string _dbName)
+        {
+            string _db_path = $@"{folder_path}\{_dbName}";
+            this.db_path = _db_path;
+        }
+        public void SetDB_path(string _dbPath)
+        {
+            this.db_path = _dbPath;
+        }
+
+        public string Get_DB_path()
+        {
+            return db_path;
+        }
+
+        public string GetPathPytamidenDB_path()
+        {
+            string folder_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string path = $@"{folder_path}\materialDB_20240130.db";
+            return path;
+
+        }
+
+
+        public string LoadConnectionStringPublic { get => LoadConnectionString(); }
+        private string LoadConnectionString()
+        {
+
+            return $@"Data Source={db_path}; Version = 3;";
+        }
+
+        #endregion ConnectionString
+
+
+
+        #region Create and edit db
+
+        public void CreateDB(string _path)
+        {
+            SQLiteConnection.CreateFile(_path);
+        }
+
+        public string AddToDB(LCA_Material material, bool overwrite)
+        {
+
+            try
+            {
+                using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                {
+                    string sql = overwrite ? "REPLACE INTO " : "INSERT INTO ";
+                    sql += $"materials (name,category,density,GWP,ODB,POCP,EP,AP) VALUES ('{material.Name}','{material.Category}','{material.Density}','{material.GWP}','{material.ODP}','{material.POCP}','{material.EP}','{material.AP}')";
+                    //if (overwrite) sql += $" ON DUPLICATE KEY UPDATE `name`=VALUES(`name`)";
+
+
+                    cnn.Execute(sql);
+                }
+                
+
+            }
+            catch(SQLiteException e)
+            {
+                if(e.ErrorCode == 19  && e.ToString().Contains("UNIQUE")) { return "Duplicate , to replace set overwrite to true. ";}
+
+                return e.ToString();
+            }
+
+            return "No error";
+        }
+
+        #endregion Create and edit db
+
+
+        #region Get data from DB
+        public List<string> GetMaterialGroups()
         {
 
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
@@ -23,7 +130,7 @@ namespace LCA_Toolbox.Database
             }
 
         }
-        public static List<LCA_Material> GetMaterials()
+        public List<LCA_Material> GetMaterials()
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -31,7 +138,7 @@ namespace LCA_Toolbox.Database
                 return output.ToList();
             }
         }
-        public static List<LCA_Material> GetMaterialsByGroup(string group)
+        public List<LCA_Material> GetMaterialsByGroup(string group)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -41,7 +148,7 @@ namespace LCA_Toolbox.Database
             }
         }
 
-        public static bool GetMaterialByName(string name, out LCA_Material outMaterial)
+        public bool GetMaterialByName(string name, out LCA_Material outMaterial)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -62,11 +169,11 @@ namespace LCA_Toolbox.Database
             }
         }
 
-        public static string LoadConnectionStringPublic { get => LoadConnectionString(); }
-        private static string LoadConnectionString()
-        {
-            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            return $@"Data Source={path}\materialDB_20240130.db; Version = 3;";
-        }
+        #endregion Get data from DB
+
+
+
+
+
     }
 }

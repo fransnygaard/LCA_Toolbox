@@ -9,7 +9,7 @@ using GH_GeneralClassLibrary.Utils;
 using GH_GeneralClassLibrary.UI;
 using Grasshopper.Kernel.Types;
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
     public class Variations_Component : GH_MyExtendableComponent
     {

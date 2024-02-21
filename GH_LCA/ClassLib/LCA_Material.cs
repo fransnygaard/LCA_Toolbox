@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
 
     public class LCA_Material_List
@@ -28,25 +28,25 @@ namespace GH_LCA
         public LCA_Material(LCA_Material other)
         {
             this.dt = other.dt.Copy();
-            //Name = material.Name;
-            //Category = material.Category;
+            Name = other.Name;
+            Category = other.Category;
 
-            //Description = material.Description;
-            //Density = material.Density;
-            //Insulation = material.Insulation;
+            Description = other.Description;
+            Density = other.Density;
+            Insulation = other.Insulation;
 
-            //GWP = material.GWP;
-            //ODP = material.ODP;
-            //POCP = material.POCP;
-            //EP = material.EP;
-            //AP = material.AP;
+            ODP = other.ODP;
+            POCP = other.POCP;
+            EP = other.EP;
+            AP = other.AP;
 
-            //A4_A5 = material.A4_A5;
-            //C = material.C;
-            //D = material.D;
+            //A1toA3 = other.A1toA3;
+            //A4 = other.A4;
+            // C1toC4 = other.C1toC4;
+            //D = other.D;
 
-            //DataSource = material.DataSource;
-            //MaterialGUID = Guid.NewGuid().ToString();
+            DataSource = other.DataSource;
+            MaterialGUID = Guid.NewGuid().ToString();
 
         }
 
@@ -60,16 +60,34 @@ namespace GH_LCA
 
         private DataTable getNewMaterialDataTable()
         {
-            dt.Clear();
+            DataTable rtnD = new DataTable();
+            rtnD.Columns.Add(new DataColumn("A1-A3", typeof(double))); //Production phase
+            rtnD.Columns.Add(new DataColumn("A4", typeof(double))); //Trasport to site
+            rtnD.Columns.Add(new DataColumn("A5", typeof(double))); //Trasport to site
+            rtnD.Columns.Add(new DataColumn("B1", typeof(double))); //Use
+            rtnD.Columns.Add(new DataColumn("B2", typeof(double))); //Maintenence
+            rtnD.Columns.Add(new DataColumn("B3", typeof(double))); //Repair
+            rtnD.Columns.Add(new DataColumn("B4", typeof(double))); //Replacement
+            rtnD.Columns.Add(new DataColumn("B5", typeof(double))); //Refurbishment
+            rtnD.Columns.Add(new DataColumn("B6", typeof(double))); //operational energy
+            rtnD.Columns.Add(new DataColumn("C1-C4", typeof(double))); // End of life
+            rtnD.Columns.Add(new DataColumn("D", typeof(double))); //Beyond lifetime
 
-            dt.Columns.Add("name", typeof(string));
-            dt.Columns.Add("category", typeof(string));
-            dt.Columns.Add("description", typeof(string));
+            foreach (DataColumn col in rtnD.Columns)
+            {
+                col.DefaultValue = 0;  
+            }
+
+            rtnD.Rows.Add(rtnD.NewRow());
+
+            return rtnD;
 
         }
-        //
 
-       public string Name { get { return dt.Rows[0]["name"].ToString(); } set { dt.Rows[0]["name"] = value; } }
+        private string name;
+        public string Name { get { return this.name; } set { this.name = value; } }
+
+        private string category; 
         public string Category
         {
             get
@@ -85,7 +103,7 @@ namespace GH_LCA
             }
         }
 
-        public string Description { get { return dt.Rows[0]["description"].ToString(); } set { dt.Rows[0]["description"] = value; } }
+        public string Description { get; set; }
 
         //Density [kg/m3]
         public double Density { get; set; }
@@ -93,7 +111,9 @@ namespace GH_LCA
         public double Insulation { get; set; }
 
         //GWP [kg CO2 eq / m3 ]
-        public double GWP { get; set; }
+        public double A1toA3 { get { return (double)dt.Rows[0]["A1-A3"]; } set { dt.Rows[0]["A1-A3"] = value; } }
+        public double GWP { get { return (double)dt.Rows[0]["A1-A3"]; } set { dt.Rows[0]["A1-A3"] = value; } }
+
 
         public double ODP { get; set; }
         public double POCP { get; set; }
@@ -102,11 +122,11 @@ namespace GH_LCA
 
 
         // TravelDistance to calculate A4 cost
-        public double A4_A5 { get; set; }
+        public double A4 { get { return (double)dt.Rows[0]["A4"]; } set { dt.Rows[0]["A4"] = value; } }
 
-        public double C { get; set; }
+        public double C1toC4 { get { return (double)dt.Rows[0]["C1-C4"]; } set { dt.Rows[0]["C1-C4"] = value; } }
 
-        public double D { get; set; }
+        public double D { get { return (double)dt.Rows[0]["D"]; } set { dt.Rows[0]["D"] = value; } }
 
         public string DataSource { get; set; }
         public string MaterialGUID{ get; set; }

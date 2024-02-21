@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using GH_GeneralClassLibrary.DataStructures;
 using GH_GeneralClassLibrary.Utils;
-using GH_LCA;
+using LCA_Toolbox;
 
 namespace ART_MACHINE.Components
 {

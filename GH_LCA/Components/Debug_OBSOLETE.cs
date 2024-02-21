@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.IO;
+using System.Reflection;
+using System.Web;
+using LCA_Toolbox;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
-using GH_GeneralClassLibrary.UI;
-using Grasshopper.Kernel.Types;
-using Newtonsoft.Json;
 
-namespace GH_LCA.Components
+namespace LCA_Toolbox
 {
-    public class MaterialToJSON : GH_MyExtendableComponent
+    public class Debug_OBSOLETE : GH_Component
     {
         /// <summary>
-        /// Initializes a new instance of the MateriaToJSON class.
+        /// Initializes a new instance of the Debug class.
         /// </summary>
-        public MaterialToJSON()
-          : base("Material To JSON", "Mat->JSON",
-              "Turn your material into JSON format to start building your own custom material database.",
-              Constants.PluginName, Constants.SubMaterials)
+        public Debug_OBSOLETE()
+          : base("LCA: Debug", "Nickname",
+              "Description",
+              Constants.PluginName, "Debug")
         {
         }
 
@@ -26,11 +26,6 @@ namespace GH_LCA.Components
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            inputIndexCounter_Reset();
-
-            pManager.AddGenericParameter(Constants.Material.Name, Constants.Material.NickName, Constants.Material.Discription, GH_ParamAccess.list); // 0
-            inputParams.Add(Constants.Material.Name, IndexCounter);
-
         }
 
         /// <summary>
@@ -38,12 +33,7 @@ namespace GH_LCA.Components
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-
-            outputIndexCounter_Reset();
-
-            pManager.AddTextParameter(Constants.JSON.Name, Constants.JSON.NickName,Constants.JSON.Discription, GH_ParamAccess.item); // 0
-            outputParams.Add(Constants.JSON.Name, IndexCounter);
-
+            pManager.AddTextParameter("D", "D", "", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -52,15 +42,14 @@ namespace GH_LCA.Components
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            List<string> rtnList = new List<string>();
 
-            LCA_Material_List material_list = new LCA_Material_List();
+            //rtnList.Add(Database.SqliteDataAcces.LoadConnectionStringPublic);
 
-            if (!DA.GetDataList<LCA_Material>(inputParams[Constants.Material.Name], material_list.list)) return;
-            if (material_list.list[0] == null) return;
 
-        
-            string serialized = JsonConvert.SerializeObject(material_list.list);
-            DA.SetData(outputParams[Constants.JSON.Name], serialized);
+
+            DA.SetDataList(0, rtnList);
+
 
         }
 
@@ -82,7 +71,15 @@ namespace GH_LCA.Components
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("924352dd-8677-480d-9071-307e2c9d4e6a"); }
+            get { return new Guid("840A27C4-B302-4AFC-94DF-C9276A78469B"); }
+        }
+
+        public override GH_Exposure Exposure 
+        {
+            get
+            {
+                return GH_Exposure.hidden;
+            }
         }
     }
 }

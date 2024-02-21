@@ -11,16 +11,16 @@ using System.Runtime.InteropServices;
 using System.Web;
 using System.Diagnostics.Eventing.Reader;
 
-namespace GH_LCA.Components
+namespace LCA_Toolbox.Components
 {
-    public class MaterialFromJSON : GH_MyExtendableComponent
+    public class MaterialFromJSON_OBSOLETE : GH_MyExtendableComponent
     {
 
 
         /// <summary>
         /// Initializes a new instance of the MaterialFromJSON class.
         /// </summary>
-        public MaterialFromJSON()
+        public MaterialFromJSON_OBSOLETE()
           : base("Material From JSON", "JSON->Mat",
               "Turn JSON file containing materials into material for use in " + Constants.PluginName,
               Constants.PluginName, Constants.SubMaterials)

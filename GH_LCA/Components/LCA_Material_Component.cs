@@ -8,7 +8,7 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
     public class LCA_Material_Component : GH_MyExtendableComponent
     {
@@ -188,7 +188,7 @@ namespace GH_LCA
 
             if (DA.GetData(inputParams[Constants.Insulation.Name], ref _tempNR)) { material.Insulation = _tempNR; }
 
-            if (DA.GetData(inputParams[Constants.GWP_A1_A3.Name], ref _tempNR)) { material.GWP = _tempNR; }
+            if (DA.GetData(inputParams[Constants.GWP_A1_A3.Name], ref _tempNR)) { material.A1toA3 = _tempNR; }
 
             if (DA.GetData(inputParams[Constants.ODP.Name], ref _tempNR)) { material.ODP = _tempNR; }
 
@@ -198,9 +198,9 @@ namespace GH_LCA
 
             if (DA.GetData(10, ref _tempNR)) { material.AP = _tempNR; }
 
-            if (DA.GetData(11, ref _tempNR)) { material.A4_A5 = _tempNR; }
+            if (DA.GetData(11, ref _tempNR)) { material.A4 = _tempNR; }
 
-            if (DA.GetData(12, ref _tempNR)) { material.C = _tempNR; }
+            if (DA.GetData(12, ref _tempNR)) { material.C1toC4 = _tempNR; }
 
             if (DA.GetData(13, ref _tempNR)) { material.D = _tempNR; }
 
@@ -209,7 +209,7 @@ namespace GH_LCA
 
             if (material.Name == "NULL" || material.Name == null) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Name can not be NULL"); return; }
             if (material.Density <= 0 || material.Name == null) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "density can not be negative or null"); return; }
-            if (material.GWP == double.NaN) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "GWP must be a valid number."); return; }
+            if (material.A1toA3 == double.NaN) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "GWP must be a valid number."); return; }
 
 
             //SET OUTPUTS
@@ -219,7 +219,7 @@ namespace GH_LCA
             DA.SetData(outputParams[Constants.Mat_Description.Name], material.Description);
             DA.SetData(outputParams[Constants.Density.Name], material.Density);
             DA.SetData(outputParams[Constants.Insulation.Name], material.Insulation);
-            DA.SetData(outputParams[Constants.GWP_A1_A3.Name], material.GWP);
+            DA.SetData(outputParams[Constants.GWP_A1_A3.Name], material.A1toA3);
             DA.SetData(outputParams[Constants.ODP.Name], material.ODP);
 
 
@@ -239,8 +239,8 @@ namespace GH_LCA
             DA.SetData(8, material.POCP);
             DA.SetData(9, material.EP);
             DA.SetData(10, material.AP);
-            DA.SetData(11, material.A4_A5);
-            DA.SetData(12, material.C);
+            DA.SetData(11, material.A4);
+            DA.SetData(12, material.C1toC4);
             DA.SetData(13, material.D);
             DA.SetData(14, material.DataSource);
 

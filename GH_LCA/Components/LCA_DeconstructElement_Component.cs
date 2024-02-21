@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 
-namespace GH_LCA
+namespace LCA_Toolbox
 {
     public class LCA_DeconstructElement_Component : GH_Component
     {
