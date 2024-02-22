@@ -207,7 +207,40 @@ namespace LCA_Toolbox
         #endregion  LCA STAGES
 
 
+        #region RESULTS
 
+        public static Descriptor Embodied_carbon
+        {
+            get { return new Descriptor("Embodied Carbon [kg CO2eq]", "Embodied_Carbon", "??"); }
+
+        }
+
+        public static Descriptor Operational_carbon
+        {
+            get { return new Descriptor("Operational Carbon [kg CO2eq]", "Operational_Carbon", "??"); }
+
+        }
+
+        public static Descriptor Circular_ReusePotential
+        {
+            get { return new Descriptor("Circular reuse potential [kg CO2eq]", "Reuse_potential ", "??"); }
+
+        }
+
+        public static Descriptor DataGridHeaders
+        {
+            get { return new Descriptor("DataGridHeaders[]", "Headers ", "??"); }
+
+        }
+        public static Descriptor ValueTree
+        {
+            get { return new Descriptor("ValueTree[[]]", "ValueTree ", "??"); }
+
+        }
+
+
+
+        #endregion RESULTS
 
 
 

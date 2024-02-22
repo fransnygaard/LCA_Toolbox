@@ -25,9 +25,9 @@ namespace LCA_Toolbox
         {
             pManager.AddGenericParameter(Constants.Elements.Name, Constants.Elements.NickName, Constants.Elements.Discription, GH_ParamAccess.list);
 
-            pManager.AddNumberParameter(Constants.B6_Year.Name, Constants.B6_Year.NickName, Constants.B6_Year.Discription, GH_ParamAccess.item,0);
+            pManager.AddNumberParameter(Constants.B6_Year.Name, Constants.B6_Year.NickName, Constants.B6_Year.Discription, GH_ParamAccess.list,0);
 
-            pManager.AddIntegerParameter(Constants.Lifetime.Name,Constants.Lifetime.NickName, Constants.Lifetime.Discription, GH_ParamAccess.item, -1);
+            pManager.AddIntegerParameter(Constants.Lifetime.Name,Constants.Lifetime.NickName, Constants.Lifetime.Discription, GH_ParamAccess.item, 60);
             
             
             registrerInputParams(pManager);
@@ -55,19 +55,22 @@ namespace LCA_Toolbox
 
 
 
-            List<LCA_Element> elements = new List<LCA_Element>();
-            if (!DA.GetDataList(inputParams[Constants.Elements], elements)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No Elements found !"); return; }
-            if (elements[0] == null) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No Elements found"); return; }
+            List<LCA_Element> input_elements = new List<LCA_Element>();
+            if (!DA.GetDataList(inputParams[Constants.Elements], input_elements)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No Elements found !"); return; }
+            if (input_elements[0] == null) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No Elements found"); return; }
 
 
-            double B6_perYear = 0;
-            DA.GetData(inputParams[Constants.B6_Year], ref B6_perYear);
+            List<double> input_B6_perYear = new List<double>();
+            DA.GetDataList(inputParams[Constants.B6_Year], input_B6_perYear);
 
 
-            int modelifetime = -1;
-            DA.GetData<int>(inputParams[Constants.Lifetime], ref modelifetime);
+            int input_modelifetime = -1;
+            DA.GetData<int>(inputParams[Constants.Lifetime], ref input_modelifetime);
+            if(input_modelifetime <= 0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"{Constants.Lifetime.Name} has to be larger than 0"); return; }
 
-            LCA_Model model = new LCA_Model(elements, modelifetime, B6_perYear);
+
+
+            LCA_Model model = new LCA_Model(input_elements, input_modelifetime, input_B6_perYear);
 
 
 
@@ -80,7 +83,7 @@ namespace LCA_Toolbox
             //SET DATA
             DA.SetData(outputParams[Constants.Model], model);
 
-            DA.SetData(outputParams[Constants.GWP_TOTAL], model.GetGWPAllStages());
+            //DA.SetData(outputParams[Constants.GWP_TOTAL], model.GetGWPAllStages());
 
 
 

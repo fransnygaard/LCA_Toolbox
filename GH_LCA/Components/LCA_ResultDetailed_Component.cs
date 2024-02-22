@@ -6,13 +6,13 @@ using GH_GeneralClassLibrary.UI;
 
 namespace LCA_Toolbox
 {
-    public class LCA_DetailedResult_Component : GH_MyExtendableComponent
+    public class LCA_ResultDetailed_Component : GH_MyExtendableComponent
     {
         /// <summary>
         /// Initializes a new instance of the LCA_DetailedResult_Component class.
         /// </summary>
-        public LCA_DetailedResult_Component()
-          : base("LCA: Detailed Result", "LCA: Detailed Result",
+        public LCA_ResultDetailed_Component()
+          : base("LCA: Result Detailed", "LCA: Result Detailed",
               "Description",
               Constants.PluginName, Constants.SubResults)
         {
@@ -23,6 +23,7 @@ namespace LCA_Toolbox
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
+            //Model input
             pManager.AddGenericParameter(Constants.Model.Name, Constants.Model.NickName,Constants.Model.Discription, GH_ParamAccess.item);
 
             //Allow Carbon sequestration
@@ -72,12 +73,8 @@ namespace LCA_Toolbox
             LCA_Model model = null;
 
             if (!DA.GetData<LCA_Model>(inputParams[Constants.Model], ref model)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Model not valid"); return; }
-
-            //foreach LCA_Element element in model.get
-            bool allowSeq = false;
-            DA.GetData<bool>(inputParams[Constants.AllowSequestration], ref allowSeq);
-
-            model.AllowSequestration = allowSeq;
+            
+            DA.GetData<bool>(inputParams[Constants.AllowSequestration], ref model.AllowSequestration);
 
        
 
@@ -85,8 +82,6 @@ namespace LCA_Toolbox
 
       //SET DATA
 
-            //DEBUG
-            //DA.SetDataList(16, debugLog);
 
 
             DA.SetData(outputParams[Constants.Model.Name], model);
@@ -112,12 +107,6 @@ namespace LCA_Toolbox
             //B4
             DA.SetData(13, model.GetColumnSum("Element_B4_Sum"));
 
-
-            //C
-            //DA.SetData(14, model.GetColumnSum("Element_C"));
-
-            //D
-           // DA.SetData(15, model.GetColumnSum("Element_D"));
 
 
 

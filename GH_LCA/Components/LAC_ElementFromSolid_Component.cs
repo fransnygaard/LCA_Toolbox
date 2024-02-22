@@ -138,7 +138,7 @@ namespace LCA_Toolbox
             if (DA.GetData(inputParams[Constants.Element_Name], ref _tempStr)) { element.Element_Name = _tempStr; }
             if (DA.GetData(inputParams[Constants.Element_Group], ref _tempStr)) { element.Element_Group = _tempStr; }
 
-            if (DA.GetData(inputParams[Constants.A4_kg], ref _tempNr)) { element.element_A4_perKG = _tempNr; }
+            if (DA.GetData(inputParams[Constants.A4_kg], ref _tempNr)) { element.Element_A4_perKG = _tempNr; }
 
 
 

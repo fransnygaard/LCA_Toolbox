@@ -30,9 +30,6 @@ TO DO:
 
 
 
-		move A4 from material to element
-
-
 
 
 		FIX 21022024
@@ -41,4 +38,13 @@ TO DO:
 
 
 		Construct element output
-				add a4 to A1-A3
+				Add a4 to A1-A3
+
+		
+
+
+
+		New features
+			Add result totaling embodied and operational emmisions.
+			Allow multiple B6 inputs for changing operational 
+

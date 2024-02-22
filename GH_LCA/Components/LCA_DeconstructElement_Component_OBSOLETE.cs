@@ -104,7 +104,7 @@ namespace LCA_Toolbox
             DA.SetData(11, element.Element_Weight);
             DA.SetData(12, element.Element_B4_Nreplacements);
             DA.SetData(13, element.Element_B4_Sum);
-            DA.SetData(14, element.Element_C);
+            DA.SetData(14, element.Element_C1toC4_perTime);
             DA.SetData(15, element.Element_D_ReusePercent);
 
 

@@ -10,22 +10,60 @@ namespace LCA_Toolbox
     {
         public IGH_GeometricGoo geoGoo { get; set; }
         public LCA_Material Material { get; set; }
-
-        //Used to calculate B4 (Replacement)
         public int Element_Lifetime { get; set; }
 
-        //Number of B4 replacements , caclulated at model level
-        public int Element_B4_Nreplacements { get; set; }
-        public double Element_B4_Sum { get; set; }
+        public double Element_A1toA3
+        {
+            get
+            {
+                return Element_Volume * Material.A1toA3;
+            }
+        }
+        public double Element_A1toA3_noSeq
+        {
+            get
+            {
+                return Math.Max(Element_A1toA3, 0);
+            }
+        }
+
+        public double Element_A4_perKG = 0;
+        public double Element_A4
+        {
+            get
+            {
+                double cost = Element_A4_perKG * Element_Weight;
+                if (cost > 0)
+                    return cost;
+                else
+                    return 0;
+            }
+        }
 
         public List<int> Element_B4years { get; set; }
-        public double Element_B4perTime { get; set; }
-
-        public double element_A4_perKG = 0;
+        public int Element_B4_Nreplacements { get; set; }
+        public double Element_B4_perTime { get; set; }
+        public double Element_B4_perTime_noSeq { get; set; }
+        public double Element_B4_Sum { get; set; }
+        public double Element_B4_Sum_noSeq { get; set; }
+        public double Element_C1toC4_perTime
+        {
+            get
+            {
+                return Element_Volume* Material.C1toC4;
+            }
+        }
+        public double Element_C1toC4
+        {
+            get
+            {
+                return Element_C1toC4_perTime * (Element_B4_Nreplacements + 1);
+            }
+        }
         public double Element_D_ReusePercent { get; set; }
-
         public string Element_Name { get; set; }
         public string Element_Group { get; set; }
+
 
         public LCA_Element(LCA_Material material, double volume, int expectedLifetime)
         {
@@ -35,7 +73,7 @@ namespace LCA_Toolbox
 
             Element_B4_Nreplacements = 0;
             Element_B4_Sum = 0;
-            Element_B4perTime = 0;
+            Element_B4_perTime = 0;
             Element_B4years = new List<int>();
         }
 
@@ -61,20 +99,7 @@ namespace LCA_Toolbox
 
         public double Element_Volume { get; set; }
 
-        public double Element_A1toA3
-        {
-            get
-            {
-                return Element_Volume * Material.A1toA3;
-            }
-        }
-        public double Element_A1toA3_noSeq
-        {
-            get
-            {
-                return Math.Max(Element_A1toA3, 0);
-            }
-        }
+ 
         public double Element_ODP
         {
             get
@@ -103,33 +128,6 @@ namespace LCA_Toolbox
                 return Element_Volume * Material.AP;
             }
         }
-
-        public double Element_A4
-        {
-            get
-            {
-                double cost = element_A4_perKG * Element_Weight;
-                if (cost > 0)
-                    return cost;
-                else
-                    return 0;
-            }
-        }
-
-        public double Element_C
-        {
-            get
-            {
-                double cost = Material.C1toC4 * Element_Weight;
-                if (cost > 0)
-                    return cost;
-                else
-                    return 0;
-            }
-        }
-
-        //public double element_D_prosentage = 0;
-
 
         public double Element_Weight
         {
