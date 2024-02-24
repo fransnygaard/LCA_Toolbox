@@ -28,8 +28,9 @@ namespace LCA_Toolbox
             pManager.AddNumberParameter(Constants.B6_Year.Name, Constants.B6_Year.NickName, Constants.B6_Year.Discription, GH_ParamAccess.list,0);
 
             pManager.AddIntegerParameter(Constants.Lifetime.Name,Constants.Lifetime.NickName, Constants.Lifetime.Discription, GH_ParamAccess.item, 60);
-            
-            
+
+            pManager.AddBooleanParameter(Constants.AllowSequestration.Name, Constants.AllowSequestration.NickName, Constants.AllowSequestration.Discription, GH_ParamAccess.item, false);
+
             registrerInputParams(pManager);
         }
 
@@ -51,9 +52,6 @@ namespace LCA_Toolbox
         /// <param name="DA">The DA object is used to retrieve from inputs and store in outputs.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            List<string> debugLog = new List<string>();
-
-
 
             List<LCA_Element> input_elements = new List<LCA_Element>();
             if (!DA.GetDataList(inputParams[Constants.Elements], input_elements)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "No Elements found !"); return; }
@@ -73,17 +71,12 @@ namespace LCA_Toolbox
             LCA_Model model = new LCA_Model(input_elements, input_modelifetime, input_B6_perYear);
 
 
-
-
-            debugLog.Add(model.elementsDataTable.ToString());
-
-
+            DA.GetData<bool>(inputParams[Constants.AllowSequestration], ref model.AllowSequestration);
 
 
             //SET DATA
             DA.SetData(outputParams[Constants.Model], model);
-
-            //DA.SetData(outputParams[Constants.GWP_TOTAL], model.GetGWPAllStages());
+            DA.SetData(outputParams[Constants.GWP_TOTAL], model.GetGWP_total());
 
 
 

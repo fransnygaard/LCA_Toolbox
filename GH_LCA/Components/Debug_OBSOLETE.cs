@@ -11,6 +11,14 @@ namespace LCA_Toolbox
 {
     public class Debug_OBSOLETE : GH_Component
     {
+
+        public override GH_Exposure Exposure
+        {
+            get
+            {
+                return GH_Exposure.hidden;
+            }
+        }
         /// <summary>
         /// Initializes a new instance of the Debug class.
         /// </summary>
@@ -74,12 +82,6 @@ namespace LCA_Toolbox
             get { return new Guid("840A27C4-B302-4AFC-94DF-C9276A78469B"); }
         }
 
-        public override GH_Exposure Exposure 
-        {
-            get
-            {
-                return GH_Exposure.hidden;
-            }
-        }
+
     }
 }

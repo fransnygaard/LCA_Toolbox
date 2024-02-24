@@ -4,7 +4,11 @@ using System.Collections.Generic;
 using Grasshopper.Kernel;
 using Rhino.Geometry;
 using GH_GeneralClassLibrary.UI;
-
+using Rhino.Render;
+using Eto.Forms;
+using GH_GeneralClassLibrary.Utils;
+using Grasshopper;
+using Grasshopper.Kernel.Data;
 
 namespace LCA_Toolbox.Components
 {
@@ -41,7 +45,7 @@ namespace LCA_Toolbox.Components
         {
 
             pManager.AddTextParameter(Constants.DataGridHeaders.Name, Constants.DataGridHeaders.NickName, Constants.DataGridHeaders.Discription, GH_ParamAccess.list);
-            pManager.AddTextParameter(Constants.ValueTree.Name, Constants.ValueTree.NickName, Constants.ValueTree.Discription, GH_ParamAccess.tree);
+            pManager.AddNumberParameter(Constants.ValueTree.Name, Constants.ValueTree.NickName, Constants.ValueTree.Discription, GH_ParamAccess.tree);
 
 
 
@@ -63,10 +67,33 @@ namespace LCA_Toolbox.Components
             DA.GetData<bool>(inputParams[Constants.AllowSequestration], ref model.AllowSequestration);
 
 
+            List<string> DatagridHeaderList = new List<string> {"Year", "Embodied", "Operational", "Total Carbon" , "Cumulative Carbon" } ;
 
+            List<double> Years = model.GetDataColumnFromTimeline("Year");
+            List<double> Sum_Embodied = model.GetDataColumnFromTimeline("Sum_Embodied");
+            List<double> Sum_Operational = model.GetDataColumnFromTimeline("Sum_Operational");
+            List<double> Sum_Carbon = model.GetDataColumnFromTimeline("Sum_Carbon");
+            List<double> Cumulative_Carbon = model.GetDataColumnFromTimeline("Cumulative_Carbon");
 
+            //List<List<double>> ValueTreeNestedList = new List<List<double>>();
+            DataTree<double> ValueTree = new DataTree<double>();
+            for (int i = 0; i < Sum_Embodied.Count;i++)
+            {
+                ///Rhino.Collections.RhinoList<double> branch = new Rhino.Collections.RhinoList<double>();
+                List<double> branch = new List<double>();
+                branch.Add(Years[i]);
+                branch.Add(Sum_Embodied[i]);
+                branch.Add(Sum_Operational[i]);
+                branch.Add(Sum_Carbon[i]);
+                branch.Add(Cumulative_Carbon[i]);
+                ValueTree.AddRange(branch,new GH_Path(i));
+
+            }
 
             //SET DATA
+
+            DA.SetDataList(outputParams[Constants.DataGridHeaders],DatagridHeaderList);
+            DA.SetDataTree(outputParams[Constants.ValueTree], ValueTree);
 
 
         }

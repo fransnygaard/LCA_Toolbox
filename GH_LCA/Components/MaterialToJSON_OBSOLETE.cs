@@ -11,6 +11,13 @@ namespace LCA_Toolbox.Components
 {
     public class MaterialToJSON_OBSOLETE : GH_MyExtendableComponent
     {
+        public override GH_Exposure Exposure
+        {
+            get
+            {
+                return GH_Exposure.hidden;
+            }
+        }
         /// <summary>
         /// Initializes a new instance of the MateriaToJSON class.
         /// </summary>

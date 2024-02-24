@@ -12,6 +12,11 @@ namespace LCA_Toolbox
         public LCA_Material Material { get; set; }
         public int Element_Lifetime { get; set; }
 
+        public double Element_Embodied
+        { get { return Element_A1toA3 + Element_A4 + Element_B4_Sum + Element_C1toC4; } }
+        public double Element_Embodied_noSeq
+        { get { return Element_A1toA3_noSeq + Element_A4 + Element_B4_Sum_noSeq + Element_C1toC4; } }
+
         public double Element_A1toA3
         {
             get

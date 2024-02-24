@@ -1,11 +1,73 @@
 ﻿using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 
 namespace LAC_ClassLibrary
 {
+
+    static class ColorInterpolator
+    {
+        delegate byte ComponentSelector(Color color);
+        static ComponentSelector _redSelector = color => color.R;
+        static ComponentSelector _greenSelector = color => color.G;
+        static ComponentSelector _blueSelector = color => color.B;
+
+        public static Color InterpolateBetween(
+            Color endPoint1,
+            Color endPoint2,
+            double lambda)
+        {
+            if (lambda < 0 || lambda > 1)
+            {
+                throw new ArgumentOutOfRangeException("lambda");
+            }
+            Color color = Color.FromArgb(
+                InterpolateComponent(endPoint1, endPoint2, lambda, _redSelector),
+                InterpolateComponent(endPoint1, endPoint2, lambda, _greenSelector),
+                InterpolateComponent(endPoint1, endPoint2, lambda, _blueSelector)
+            );
+
+            return color;
+        }
+
+        static byte InterpolateComponent(
+            Color endPoint1,
+            Color endPoint2,
+            double lambda,
+            ComponentSelector selector)
+        {
+            return (byte)(selector(endPoint1)
+                + (selector(endPoint2) - selector(endPoint1)) * lambda);
+        }
+    }
+
+
     public static class LCA_HelperCalss
     {
+
+        public static List<double> NormalizeValues(this List<double> values)
+        {
+            List<double> result = values;
+            double Min = values.Min();
+            double Max = values.Max();
+            for (int i = 0; i < values.Count; i++)
+            {
+                result[i] = (result[i] - Min) / (Max - Min);
+
+            }
+
+            return result;
+
+        }
+        public static double Interpolate(double value, double oldMin, double oldMax, double newMin, double newMax)
+        {
+            return (double)(newMin + (newMax - newMin) * (value - oldMin) / (oldMax - oldMin));
+        }
+
 
         //Return number in meters, scaled from current rhino units
         public static double convertValueToMeters(double value)
@@ -110,6 +172,9 @@ namespace LAC_ClassLibrary
 
             return volume;
         }
+
+
+        
 
 
     }

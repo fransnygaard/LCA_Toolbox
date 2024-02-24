@@ -41,7 +41,9 @@ TO DO:
 				Add a4 to A1-A3
 
 		
-
+		RESULT Viewer ,
+			ADD input colors
+			ADD dropdown for individual elements , for element name , or elemenet gorup. 
 
 
 		New features

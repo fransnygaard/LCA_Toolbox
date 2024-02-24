@@ -44,7 +44,7 @@ namespace LCA_Toolbox
         /// new tabs/panels will automatically be created.
         /// </summary>
         public LCA_ConstrucMaterial_fromDB_Component()
-          : base("LAC: Get material from CustomDB", "LAC: Get material from CustomDB",
+          : base("LAC: Get material from local database", "LAC: material from local DB",
             "Description",
             Constants.PluginName,Constants.SubMaterials)
         {

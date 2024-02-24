@@ -238,6 +238,25 @@ namespace LCA_Toolbox
 
         }
 
+        public static Descriptor GeoGoo
+        {
+            get { return new Descriptor("Geo", "Geo ", "??"); }
+
+        }
+
+        public static Descriptor ResultColour
+        {
+            get { return new Descriptor("ResultColour", "ResultColour", "??"); }
+
+        }
+        public static Descriptor NormalizeValues
+        {
+            get { return new Descriptor("NormalizeValues", "NormalizeValues", "??"); }
+
+        }
+
+
+
 
 
         #endregion RESULTS
@@ -276,7 +295,7 @@ namespace LCA_Toolbox
        
         public static Descriptor DataSource
         {
-            get { return new Descriptor("DataSource", "DataSource", ""); }
+            get { return new Descriptor("DataSource", "source", ""); }
 
         }
 

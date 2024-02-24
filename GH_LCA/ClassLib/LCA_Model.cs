@@ -1,4 +1,5 @@
-﻿using Grasshopper.GUI;
+﻿using Eto.Forms;
+using Grasshopper.GUI;
 using Rhino.ApplicationSettings;
 using Rhino.Geometry;
 using Rhino.Render;
@@ -43,6 +44,11 @@ namespace LCA_Toolbox
 
         }
 
+        public List<double> GetDataColumnFromTimeline(string column)
+        {
+            return timeline.AsEnumerable().Select(x => (double)x[column]).ToList();
+        }
+
         public LCA_Model Clone()
         {
             return new LCA_Model(this);
@@ -64,7 +70,7 @@ namespace LCA_Toolbox
         public DataTable ConstructTimelineDataTable()
         {
             DataTable rtnDT = new DataTable();
-            rtnDT.Columns.Add(new DataColumn("Year", typeof(int))); //year
+            rtnDT.Columns.Add(new DataColumn("Year", typeof(double))); //year
 
             rtnDT.Columns.Add(new DataColumn("A1_A3", typeof(double))); //Production phase
             rtnDT.Columns.Add(new DataColumn("A1_A3_noSeq", typeof(double))); //Production phase
@@ -101,7 +107,7 @@ namespace LCA_Toolbox
 
                 int year_index = i < model_B6_perYear.Count() ? i : model_B6_perYear.Count() - 1; //repate last of not enoung b6 values.
 
-                row.SetField("Year", i);
+                row.SetField("Year", DateTime.Now.Year + i);
                 row.SetField("B6", model_B6_perYear[year_index]);
 
                 rtnDT.Rows.Add(row);
@@ -180,8 +186,8 @@ namespace LCA_Toolbox
 
 
             List<string> operationalStages = new List<string>();
-            embodiedStages.Add("B6");
-            embodiedStages.Add("B7");
+            operationalStages.Add("B6");
+            operationalStages.Add("B7");
 
 
             foreach (DataRow row in timeline.Rows)
@@ -195,7 +201,7 @@ namespace LCA_Toolbox
 
 
                 double runningSumOperational = 0;
-                foreach (string s in embodiedStages)
+                foreach (string s in operationalStages)
                 {
                     runningSumOperational += (double)row[s];
                 }
@@ -331,15 +337,15 @@ namespace LCA_Toolbox
 
         public double GetEmbodied_carbon()
         {
-            return Convert.ToDouble(timeline.Compute("SUM('Sum_Embodied')", ""));
+            return Convert.ToDouble(timeline.Compute("SUM(Sum_Embodied)",string.Empty));
         }
         public double GetOperational_carbon()
         {
-            return Convert.ToDouble(timeline.Compute("SUM('Sum_Operational')", ""));
+            return Convert.ToDouble(timeline.Compute("SUM(Sum_Operational)", string.Empty));
         }
         public double GetGWP_total()
         {
-            return Convert.ToDouble(timeline.Compute("SUM('Sum_Carbon')", ""));
+            return Convert.ToDouble(timeline.Compute("SUM(Sum_Carbon)", string.Empty));
         }
 
 

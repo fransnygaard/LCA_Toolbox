@@ -62,8 +62,6 @@ namespace LCA_Toolbox.Components
 
             DA.GetData<bool>(inputParams[Constants.AllowSequestration], ref model.AllowSequestration);
 
-
-
             DA.SetData(outputParams[Constants.Embodied_carbon], model.GetEmbodied_carbon());
             DA.SetData(outputParams[Constants.Operational_carbon], model.GetOperational_carbon());
             DA.SetData(outputParams[Constants.GWP_TOTAL], model.GetGWP_total());

@@ -8,6 +8,14 @@ namespace LCA_Toolbox
 {
     public class LCA_ResultDetailed_Component : GH_MyExtendableComponent
     {
+
+        public override GH_Exposure Exposure
+        {
+            get
+            {
+                return GH_Exposure.hidden;
+            }
+        }
         /// <summary>
         /// Initializes a new instance of the LCA_DetailedResult_Component class.
         /// </summary>

@@ -8,6 +8,13 @@ namespace LCA_Toolbox
 {
     public class LCA_DeconstructElement_Component_OBSOLETE : GH_Component
     {
+        public override GH_Exposure Exposure
+        {
+            get
+            {
+                return GH_Exposure.hidden;
+            }
+        }
         /// <summary>
         /// Initializes a new instance of the LCA_DeconstructElement_Component class.
         /// </summary>
