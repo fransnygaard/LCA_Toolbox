@@ -28,7 +28,7 @@ namespace LCA_Toolbox.Components
             pManager.AddGenericParameter(Constants.Model.Name, Constants.Model.NickName, Constants.Model.Discription, GH_ParamAccess.item);
             
             //Allow Carbon sequestration
-            pManager.AddBooleanParameter(Constants.AllowSequestration.Name, Constants.AllowSequestration.NickName, Constants.AllowSequestration.Discription, GH_ParamAccess.item,false);
+            //pManager.AddBooleanParameter(Constants.AllowSequestration.Name, Constants.AllowSequestration.NickName, Constants.AllowSequestration.Discription, GH_ParamAccess.item,false);
 
             registrerInputParams(pManager);
 
@@ -60,11 +60,11 @@ namespace LCA_Toolbox.Components
             if (!DA.GetData<LCA_Model>(inputParams[Constants.Model], ref model)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Model not valid"); return; }
 
 
-            DA.GetData<bool>(inputParams[Constants.AllowSequestration], ref model.AllowSequestration);
+            //DA.GetData<bool>(inputParams[Constants.AllowSequestration], ref model.AllowSequestration);
 
-            DA.SetData(outputParams[Constants.Embodied_carbon], model.GetEmbodied_carbon());
-            DA.SetData(outputParams[Constants.Operational_carbon], model.GetOperational_carbon());
-            DA.SetData(outputParams[Constants.GWP_TOTAL], model.GetGWP_total());
+            DA.SetData(outputParams[Constants.Embodied_carbon], model.GetEmbodied_SumModel());
+            DA.SetData(outputParams[Constants.Operational_carbon], model.GetOperational_SumModel());
+            DA.SetData(outputParams[Constants.GWP_TOTAL], model.GetTotalGWP_SumModel());
 
 
 

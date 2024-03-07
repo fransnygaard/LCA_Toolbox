@@ -67,16 +67,18 @@ namespace LCA_Toolbox
             if(input_modelifetime <= 0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"{Constants.Lifetime.Name} has to be larger than 0"); return; }
 
 
+            bool _AllowSequestration = false;
+            DA.GetData<bool>(inputParams[Constants.AllowSequestration], ref _AllowSequestration);
 
-            LCA_Model model = new LCA_Model(input_elements, input_modelifetime, input_B6_perYear);
+
+            LCA_Model model = new LCA_Model(input_elements, input_modelifetime, input_B6_perYear, _AllowSequestration);
 
 
-            DA.GetData<bool>(inputParams[Constants.AllowSequestration], ref model.AllowSequestration);
 
 
             //SET DATA
             DA.SetData(outputParams[Constants.Model], model);
-            DA.SetData(outputParams[Constants.GWP_TOTAL], model.GetGWP_total());
+            DA.SetData(outputParams[Constants.GWP_TOTAL], model.GetTotalGWP_SumModel());
 
 
 

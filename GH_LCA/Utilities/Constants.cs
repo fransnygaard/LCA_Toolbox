@@ -160,7 +160,7 @@ namespace LCA_Toolbox
             }
 
         }
-        public static Descriptor A1toA3_ELEMENT
+        public static Descriptor A1toA4_ELEMENT
         {
             get { return new Descriptor("A1-A3: Product stage [kg CO2eq / element]", "A1-A3 per element",
                  "Stage A1-A3: Product stage (Cradle to Gate)" +

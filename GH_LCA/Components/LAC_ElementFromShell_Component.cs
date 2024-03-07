@@ -56,7 +56,7 @@ namespace LCA_Toolbox
 
             pManager.AddNumberParameter(Constants.Weight.Name, Constants.Weight.NickName, Constants.Weight.Discription, GH_ParamAccess.item);
            
-            pManager.AddNumberParameter(Constants.A1toA3_ELEMENT.Name, Constants.A1toA3_ELEMENT.NickName, Constants.A1toA3_ELEMENT.Discription, GH_ParamAccess.item);
+            pManager.AddNumberParameter(Constants.A1toA4_ELEMENT.Name, Constants.A1toA4_ELEMENT.NickName, Constants.A1toA4_ELEMENT.Discription, GH_ParamAccess.item);
 
             registrerOutputParams(pManager);
         }
@@ -135,7 +135,7 @@ namespace LCA_Toolbox
             DA.SetData(outputParams[Constants.Element], element);
             DA.SetData(outputParams[Constants.Volume], element.Element_Volume);
             DA.SetData(outputParams[Constants.Weight], element.Element_Weight);
-            DA.SetData(outputParams[Constants.A1toA3_ELEMENT], element.Element_A1toA3);
+            DA.SetData(outputParams[Constants.A1toA4_ELEMENT], element.Element_A1toA3);
 
 
         }

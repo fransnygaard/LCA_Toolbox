@@ -33,7 +33,7 @@ namespace LCA_Toolbox.Components
             pManager.AddGenericParameter(Constants.Model.Name, Constants.Model.NickName, Constants.Model.Discription, GH_ParamAccess.item);
 
             //Allow Carbon sequestration
-            pManager.AddBooleanParameter(Constants.AllowSequestration.Name, Constants.AllowSequestration.NickName, Constants.AllowSequestration.Discription, GH_ParamAccess.item, false);
+            //pManager.AddBooleanParameter(Constants.AllowSequestration.Name, Constants.AllowSequestration.NickName, Constants.AllowSequestration.Discription, GH_ParamAccess.item, false);
 
             registrerInputParams(pManager);
         }
@@ -64,7 +64,7 @@ namespace LCA_Toolbox.Components
             LCA_Model model = null;
 
             if (!DA.GetData<LCA_Model>(inputParams[Constants.Model], ref model)) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Model not valid"); return; }
-            DA.GetData<bool>(inputParams[Constants.AllowSequestration], ref model.AllowSequestration);
+            //DA.GetData<bool>(inputParams[Constants.AllowSequestration], ref model.AllowSequestration);
 
 
             List<string> DatagridHeaderList = new List<string> {"Year", "Embodied", "Operational", "Total Carbon" , "Cumulative Carbon" } ;
