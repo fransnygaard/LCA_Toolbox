@@ -72,55 +72,69 @@ namespace LAC_ClassLibrary
         //Return number in meters, scaled from current rhino units
         public static double convertValueToMeters(double value)
         {
-            Rhino.RhinoDoc doc = Rhino.RhinoDoc.ActiveDoc;
-            Rhino.UnitSystem system = doc.ModelUnitSystem;
-            switch (system.ToString())
-            {
-                case "Meters":
-                    return value;
-                case "Millimeters":
-                    return value * 1e-3;
-                case "Centimeters":
-                    return value * 1e-2;
-                default:
-                    return double.NaN;
-            }
+
+            double scaleFactor = Rhino.RhinoMath.UnitScale(Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem, Rhino.UnitSystem.Meters);
+            
+            return value * scaleFactor;
+
+            //Rhino.RhinoDoc doc = Rhino.RhinoDoc.ActiveDoc;
+            //Rhino.UnitSystem system = doc.ModelUnitSystem;
+            //switch (system.ToString())
+            //{
+            //    case "Meters":
+            //        return value;
+            //    case "Millimeters":
+            //        return value * 1e-3;
+            //    case "Centimeters":
+            //        return value * 1e-2;
+            //    default:
+            //        return double.NaN;
+            //}
         }
 
         //Return number in meters, scaled from current rhino units
         public static double convertSquaredValueToMeters(double value)
         {
-            Rhino.RhinoDoc doc = Rhino.RhinoDoc.ActiveDoc;
-            Rhino.UnitSystem system = doc.ModelUnitSystem;
-            switch (system.ToString())
-            {
-                case "Meters":
-                    return value;
-                case "Millimeters":
-                    return value * 1e-6;
-                case "Centimeters":
-                    return value * 1e-4;
-                default:
-                    return double.NaN;
-            }
+
+            double scaleFactor = Rhino.RhinoMath.UnitScale(Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem, Rhino.UnitSystem.Meters);
+            double scaleFactor2 = scaleFactor * scaleFactor;
+            return value * scaleFactor2;
+            //''
+            //Rhino.RhinoDoc doc = Rhino.RhinoDoc.ActiveDoc;
+            //Rhino.UnitSystem system = doc.ModelUnitSystem;
+            //switch (system.ToString())
+            //{
+            //    case "Meters":
+            //        return value;
+            //    case "Millimeters":
+            //        return value * 1e-6;
+            //    case "Centimeters":
+            //        return value * 1e-4;
+            //    default:
+            //        return double.NaN;
+            //}
         }
 
 
         public static double convertCubedValueToMeters(double value)
         {
-            Rhino.RhinoDoc doc = Rhino.RhinoDoc.ActiveDoc;
-            Rhino.UnitSystem system = doc.ModelUnitSystem;
-            switch (system.ToString())
-            {
-                case "Meters":
-                    return value;
-                case "Millimeters":
-                    return value * 1e-9;
-                case "Centimeters":
-                    return value * 1e-6;
-                default:
-                    return double.NaN;
-            }
+            double scaleFactor = Rhino.RhinoMath.UnitScale(Rhino.RhinoDoc.ActiveDoc.ModelUnitSystem, Rhino.UnitSystem.Meters);
+            double scaleFactor3 = scaleFactor * scaleFactor * scaleFactor;
+            return value * scaleFactor3;
+
+            //Rhino.RhinoDoc doc = Rhino.RhinoDoc.ActiveDoc;
+            //Rhino.UnitSystem system = doc.ModelUnitSystem;
+            //switch (system.ToString())
+            //{
+            //    case "Meters":
+            //        return value;
+            //    case "Millimeters":
+            //        return value * 1e-9;
+            //    case "Centimeters":
+            //        return value * 1e-6;
+            //    default:
+            //        return double.NaN;
+            //}
         }
 
         //This tests if the voulme can be calculated , returns -1 if calculation fails.
@@ -172,10 +186,6 @@ namespace LAC_ClassLibrary
 
             return volume;
         }
-
-
-        
-
 
     }
 

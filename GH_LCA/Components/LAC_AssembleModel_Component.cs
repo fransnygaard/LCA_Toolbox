@@ -31,6 +31,9 @@ namespace LCA_Toolbox
 
             pManager.AddBooleanParameter(Constants.AllowSequestration.Name, Constants.AllowSequestration.NickName, Constants.AllowSequestration.Discription, GH_ParamAccess.item, false);
 
+            pManager.AddBooleanParameter(Constants.TimeWeight.Name, Constants.TimeWeight.NickName, Constants.TimeWeight.Discription, GH_ParamAccess.item, false);
+
+
             registrerInputParams(pManager);
         }
 
@@ -71,7 +74,12 @@ namespace LCA_Toolbox
             DA.GetData<bool>(inputParams[Constants.AllowSequestration], ref _AllowSequestration);
 
 
-            LCA_Model model = new LCA_Model(input_elements, input_modelifetime, input_B6_perYear, _AllowSequestration);
+
+            bool _TimeWeight = false;
+            DA.GetData<bool>(inputParams[Constants.TimeWeight], ref _TimeWeight);
+
+
+            LCA_Model model = new LCA_Model(input_elements, input_modelifetime, input_B6_perYear, _AllowSequestration,_TimeWeight);
 
 
 

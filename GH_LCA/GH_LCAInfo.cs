@@ -24,6 +24,6 @@ namespace LCA_Toolbox
         //Return a string representing your preferred contact details.
         public override string AuthorContact => "";
 
-        public override string Version => "0.1.3-Alpha";
+        public override string Version => "0.1.4-Alpha";
     }
 }

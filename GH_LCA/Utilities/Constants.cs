@@ -384,6 +384,14 @@ namespace LCA_Toolbox
             }
         }
 
+        public static Descriptor TimeWeight
+        {
+            get
+            {
+                return new Descriptor("TimeWeight", "TimeWeight", " ");
+            }
+        }
+
         #endregion inputOutput
 
     }

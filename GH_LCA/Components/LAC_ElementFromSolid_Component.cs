@@ -121,10 +121,9 @@ namespace LCA_Toolbox
 
 
             //CALCULATE VOLUME
+
             double volume = LCA_HelperCalss.convertCubedValueToMeters(volume_RU);
-            if (volume == double.NaN) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Rhino units needs to be mm, cm or m"); return; }
-
-
+            
             int expectedLifetime = -1;
             DA.GetData<int>(Constants.Lifetime.Name, ref expectedLifetime);
 

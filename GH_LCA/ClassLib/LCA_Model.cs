@@ -1,5 +1,6 @@
 ﻿using Eto.Forms;
 using Grasshopper.GUI;
+using LAC_ClassLibrary;
 using Rhino.ApplicationSettings;
 using Rhino.Geometry;
 using Rhino.Render;
@@ -9,9 +10,11 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Remoting.Lifetime;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Permissions;
+using System.Text;
 using System.Web;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -26,6 +29,7 @@ namespace LCA_Toolbox
         private DataTable timelineDT;
 
         public bool AllowSequestration = true;
+        public bool TimeWeighting = false;
         int modelLifetime { get; set; }
         public List<double> model_B6_perYear { get; set; }
 
@@ -42,6 +46,7 @@ namespace LCA_Toolbox
             this.timelineDT = other.timelineDT.Copy();
 
             this.AllowSequestration = other.AllowSequestration;
+            this.TimeWeighting = other.TimeWeighting;
             this.modelLifetime = other.modelLifetime;
             this.model_B6_perYear = other.model_B6_perYear;
 
@@ -57,11 +62,12 @@ namespace LCA_Toolbox
             return new LCA_Model(this);
         }
 
-        public LCA_Model(List<LCA_Element> elements, int _lifetime, List<double> B6_perYears,bool _AllowSequestration)
+        public LCA_Model(List<LCA_Element> elements, int _lifetime, List<double> B6_perYears,bool _AllowSequestration, bool _TimeWeighting)
         {
             modelLifetime = _lifetime;
             model_B6_perYear = B6_perYears;
             AllowSequestration = _AllowSequestration;
+            TimeWeighting = _TimeWeighting;
             CreateElementsDataTable(elements);
             CreateTimelineDataTable();
   
@@ -151,13 +157,13 @@ namespace LCA_Toolbox
             // and and add B6 every year. 
             for (int i = 0; i < modelLifetime; i++)
             {
-
+                
                 DataRow row = timelineDT.NewRow();
 
                 int year_index = i < model_B6_perYear.Count() ? i : model_B6_perYear.Count() - 1; //repate last of not enoung b6 values.
 
                 row.SetField("Year", DateTime.Now.Year + i);
-                row.SetField("B6", model_B6_perYear[year_index]);
+                row.SetField("B6", model_B6_perYear[year_index] * GetTimeWeight(i));
 
                 timelineDT.Rows.Add(row);
             }
@@ -168,21 +174,22 @@ namespace LCA_Toolbox
 
             //Set B4 replacements
 
-            foreach (DataRow element in elementsDT.Rows)
+            foreach (DataRow row in elementsDT.Rows)
             {
-                foreach (int year in (List<int>)element["Element_B4years"])
+                foreach (int year in (List<int>)row["Element_B4years"])
                 {
                     if (year >= timelineDT.Rows.Count) { continue; }
-                    timelineDT.Rows[year].SetField("B4", (double)timelineDT.Rows[year]["B4"] + (double)element["Element_B4_perTime"]);
-                    timelineDT.Rows[year].SetField("C1_C4", (double)timelineDT.Rows[year]["C1_C4"] + (double)element["Element_C1toC4_perTime"]);
+                    timelineDT.Rows[year].SetField("B4", (double)timelineDT.Rows[year]["B4"] + ((double)row["Element_B4_perTime"]*GetCombinedTimeAndTechWeight(year)));
+                    timelineDT.Rows[year].SetField("C1_C4", (double)timelineDT.Rows[year]["C1_C4"] + ((double)row["Element_C1toC4_perTime"]*GetCombinedTimeAndTechWeight(year)));
                 }
             }
 
 
             // Set Year n
 
-            timelineDT.Rows[modelLifetime - 1].SetField("C1_C4", GetColumnSum("Element_C1toC4_perTime"));
+            timelineDT.Rows[modelLifetime - 1].SetField("C1_C4", GetColumnSum("Element_C1toC4_perTime")*GetCombinedTimeAndTechWeight(modelLifetime));
 
+            
 
             UpdatetimelineSumAndCumulativeCarbon();
 
@@ -239,11 +246,11 @@ namespace LCA_Toolbox
 
         private List<string> GetListOfOperationalStages()
         {
-            List<string> operationalStages = new List<string>();
-            operationalStages.Add("B6");
-            operationalStages.Add("B7");
-
-            return operationalStages;
+           return new List<string>
+            {
+                "B6",
+                "B7"
+            };
         }
 
 
@@ -543,6 +550,38 @@ namespace LCA_Toolbox
             }
             return rtnList;
 
+        }
+
+
+
+        //Implementation of dynamic LCA https://futurebuilt-zero.web.app/regneregler/tidspunkt
+        public double GetTimeWeight(int t)
+        {
+            if (t <= 0 || TimeWeighting == false)
+            {
+                return 1;
+            }
+            else
+            {
+                return 2 - (Math.Pow(Math.E, (0.00693 * t)));
+            }
+        }
+
+        public double GetTechnologyDecay(int t, double decayFactor = 0.01)
+        {
+            if (t <= 0  || TimeWeighting == false)
+            {
+                return 1;
+            }
+            else
+            {
+                return Math.Pow(Math.E, (-decayFactor * t));
+            }
+        }
+
+        public double GetCombinedTimeAndTechWeight(int t)
+        {
+            return GetTimeWeight(t) * GetTechnologyDecay(t);
         }
 
         #endregion USED IN DETAILED RESUALT
