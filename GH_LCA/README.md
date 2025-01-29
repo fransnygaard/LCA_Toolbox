@@ -1,4 +1,4 @@
-﻿download the samplefile for instructions. 
+﻿download the sample file for instructions. 
 
 https://github.com/fransnygaard/LCA_Toolbox/blob/master/SAMPLES/LCA%20SAMPLE.gh
 
