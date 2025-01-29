@@ -20,7 +20,7 @@ namespace LCA_Toolbox
 
         public static string PluginDescription
         {
-            get { return "Plugin to estimate the climate impact of your design"; }
+            get { return "Plugin for early phase estimates of the climate impact of your design"; }
         }
         public static string PluginLongName
         {
@@ -74,6 +74,23 @@ namespace LCA_Toolbox
 
         #region inputOutput
 
+        public static Descriptor RUN
+        {
+            get { return new Descriptor("RUN", "R", "set True to run component"); }
+        }
+
+        public static Descriptor Status
+        {
+            get { return new Descriptor("Status", "S", ""); }
+        }
+
+
+
+        public static Descriptor CSV
+        {
+            get { return new Descriptor("CSV sting", "csv", "plain text string fromated as Comma-separated values"); }
+        }
+
         public static Descriptor JSON
         {
             get { return new Descriptor("JSON", "J", "plain text containing one or more materials coded as JSON objects."); }
@@ -89,18 +106,23 @@ namespace LCA_Toolbox
             get { return new Descriptor("Folder", "/folder", "use the filepath component to select a local or network folder"); }
         }
 
+        public static Descriptor FileName
+        {
+            get { return new Descriptor("Filename", "filename", "filename including filetype.   ex> file.type"); }
+        }
+
 
         public static Descriptor Model
         {
-            get { return new Descriptor("Model", "M", ""); }
+            get { return new Descriptor("LCA_Model", "M", ""); }
         }
         public static Descriptor Element
         {
-            get { return new Descriptor("Element", "E", ""); }
+            get { return new Descriptor("LCA_Element", "E", ""); }
         }
         public static Descriptor Elements
         {
-            get { return new Descriptor("Elements[]", "E[]", ""); }
+            get { return new Descriptor("LCA_Elements[]", "E[]", ""); }
         }
         public static Descriptor Element_Name
         {
@@ -112,11 +134,11 @@ namespace LCA_Toolbox
         }
         public static Descriptor Material
         {
-            get { return new Descriptor("Material", "Mat", ""); }
+            get { return new Descriptor("LCA_Material", "Mat", ""); }
         }
         public static Descriptor Materials
         {
-            get { return new Descriptor("Materials[]", "Mat[]", ""); }
+            get { return new Descriptor("LCA_Materials[]", "Mat[]", ""); }
         }
         public static Descriptor Mat_Name
         {
@@ -124,7 +146,7 @@ namespace LCA_Toolbox
         }
         public static Descriptor Mat_Category
         {
-            get { return new Descriptor("Category", "C", "Material Category. Shows up in reports and can be used for filtering"); }
+            get { return new Descriptor("LCA_Material Category", "C", "Material Category. Shows up in reports and can be used for filtering"); }
         }
 
         public static Descriptor Mat_Description
@@ -160,10 +182,32 @@ namespace LCA_Toolbox
             }
 
         }
+        public static Descriptor A1toA3_ELEMENT
+        {
+            get
+            {
+                return new Descriptor("A1-A3: Product stage [kg CO2eq / element]", "A1-A3 per element",
+                 "Stage A1-A3: Product stage (Cradle to Gate)" +
+                "\n Global warming potential (CO2eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
+                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)");
+            }
+
+        }
         public static Descriptor A1toA4_ELEMENT
         {
-            get { return new Descriptor("A1-A3: Product stage [kg CO2eq / element]", "A1-A3 per element",
-                 "Stage A1-A3: Product stage (Cradle to Gate)" +
+            get { return new Descriptor("A1-A4: Product stage + transportation [kg CO2eq / element]", "A1-A4 per element",
+                 "Stage A1-A4: Product stage  + transportation (Cradle to Site)" +
+                "\n Global warming potential (CO2eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
+                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)");
+            }
+
+        }
+        public static Descriptor A4_ELEMENT
+        {
+            get
+            {
+                return new Descriptor("A4: Transport to site [kg CO2eq / element]", "A4 per element",
+                 "Stage A4: Transportation stage (Gate to Site)" +
                 "\n Global warming potential (CO2eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
                 "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)");
             }
@@ -380,7 +424,7 @@ namespace LCA_Toolbox
             get
             {
                 return new Descriptor("Allow Carbon Sequestration", "Seq", "if false negative GWP values are set to 0 to not account for Carbon Sequestration\n" +
-                "default is False. if carbon Sequestration is to be accounted for stage D4 should be set so not to get unrealistic hopes :-) ");
+                "default is False. if carbon Sequestration is to be accounted for stage C4 should be set so not to get unrealistic hopes :-) ");
             }
         }
 

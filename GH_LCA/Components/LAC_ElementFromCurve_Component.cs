@@ -25,18 +25,30 @@ namespace LCA_Toolbox
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter(Constants.Curve.Name, Constants.Curve.NickName, Constants.Curve.Discription, GH_ParamAccess.item); //0
-            pManager.AddGenericParameter(Constants.Material.Name,Constants.Material.NickName,Constants.Material.Discription, GH_ParamAccess.item); //1
-            pManager.AddNumberParameter(Constants.CrossSection.Name, Constants.CrossSection.NickName,Constants.CrossSection.Discription, GH_ParamAccess.item);//2
-            pManager.AddIntegerParameter(Constants.Lifetime.Name, Constants.Lifetime.NickName,Constants.Lifetime.Discription, GH_ParamAccess.item,-1);//3
+            //SPESIFIC INPUTS FOR ELEMENT FROM CURVE
+            pManager.AddCurveParameter(Constants.Curve.Name, Constants.Curve.NickName, Constants.Curve.Discription, GH_ParamAccess.item);
+            pManager.AddNumberParameter(Constants.CrossSection.Name, Constants.CrossSection.NickName, Constants.CrossSection.Discription, GH_ParamAccess.item);
 
-            pManager.AddTextParameter(Constants.Element_Name.Name,Constants.Element_Name.NickName,Constants.Element_Name.Discription, GH_ParamAccess.item); //4
-            Params.Input[4].Optional = true;
 
-            pManager.AddTextParameter(Constants.Element_Group.Name,Constants.Element_Group.NickName, Constants.Element_Group.Discription, GH_ParamAccess.item); //5
-            Params.Input[5].Optional = true;
+            //FOR ALL ELEMENT TO XXX components
+            pManager.AddGenericParameter(Constants.Material.Name, Constants.Material.NickName, Constants.Material.Discription, GH_ParamAccess.item);
+
+            pManager.AddIntegerParameter(Constants.Lifetime.Name, Constants.Lifetime.NickName, Constants.Lifetime.Discription, GH_ParamAccess.item, -1);
+
+            pManager.AddNumberParameter(Constants.A4_kg.Name, Constants.A4_kg.NickName, Constants.A4_kg.Discription, GH_ParamAccess.item);
+            pManager[pManager.ParamCount - 1].Optional = true;
+
+            pManager.AddNumberParameter(Constants.D_Reuse.Name, Constants.D_Reuse.NickName, Constants.D_Reuse.Discription, GH_ParamAccess.item);
+            pManager[pManager.ParamCount - 1].Optional = true;
+
+            pManager.AddTextParameter(Constants.Element_Name.Name, Constants.Element_Name.NickName, Constants.Element_Name.Discription, GH_ParamAccess.item);
+            pManager[pManager.ParamCount - 1].Optional = true;
+
+            pManager.AddTextParameter(Constants.Element_Group.Name, Constants.Element_Group.NickName, Constants.Element_Group.Discription, GH_ParamAccess.item);
+            pManager[pManager.ParamCount - 1].Optional = true;
 
             registrerInputParams(pManager);
+
         }
 
         /// <summary>
@@ -44,9 +56,16 @@ namespace LCA_Toolbox
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter(Constants.Element.Name,Constants.Element.NickName,Constants.Element.Discription, GH_ParamAccess.item);
-            pManager.AddNumberParameter(Constants.Volume.Name,Constants.Volume.NickName,Constants.Volume.Discription, GH_ParamAccess.item);
-            pManager.AddNumberParameter(Constants.Weight.Name,Constants.Weight.NickName,Constants.Weight.Discription, GH_ParamAccess.item);
+            pManager.AddGenericParameter(Constants.Element.Name, Constants.Element.NickName, Constants.Element.Discription, GH_ParamAccess.item);
+
+            pManager.AddNumberParameter(Constants.Weight.Name, Constants.Weight.NickName, Constants.Weight.Discription, GH_ParamAccess.item);
+
+            pManager.AddNumberParameter(Constants.Volume.Name, Constants.Volume.NickName, Constants.Volume.Discription, GH_ParamAccess.item);
+
+            pManager.AddNumberParameter(Constants.A1toA3_ELEMENT.Name, Constants.A1toA3_ELEMENT.NickName, Constants.A1toA3_ELEMENT.Discription, GH_ParamAccess.item);
+
+            pManager.AddNumberParameter(Constants.A4_ELEMENT.Name, Constants.A4_ELEMENT.NickName, Constants.A4_ELEMENT.Discription, GH_ParamAccess.item);
+
             pManager.AddNumberParameter(Constants.A1toA4_ELEMENT.Name, Constants.A1toA4_ELEMENT.NickName, Constants.A1toA4_ELEMENT.Discription, GH_ParamAccess.item);
 
             registrerOutputParams(pManager);
@@ -95,16 +114,24 @@ namespace LCA_Toolbox
 
             //ELEMENT NAME AND GROUP
             string _tempStr = string.Empty;
+            double _tempNr = double.NaN;
 
             if (DA.GetData(inputParams[Constants.Element_Name], ref _tempStr)) { element.Element_Name = _tempStr; }
             if (DA.GetData(inputParams[Constants.Element_Group], ref _tempStr)) { element.Element_Group = _tempStr; }
 
+
+            //FOR ALL ELEMENT TO XX COMPONENTS
+            //Set A4
+            if (DA.GetData(inputParams[Constants.A4_kg], ref _tempNr)) { element.Element_A4_perKG = _tempNr; }
+
+            //SET DATA
+
             DA.SetData(outputParams[Constants.Element], element);
             DA.SetData(outputParams[Constants.Volume], element.Element_Volume);
             DA.SetData(outputParams[Constants.Weight], element.Element_Weight);
-            DA.SetData(outputParams[Constants.A1toA4_ELEMENT], element.Element_A1toA3);
-
-
+            DA.SetData(outputParams[Constants.A1toA4_ELEMENT], element.Element_A1toA4());
+            DA.SetData(outputParams[Constants.A4_ELEMENT], element.Element_A4);
+            DA.SetData(outputParams[Constants.A1toA3_ELEMENT], element.Element_A1toA3);
         }
 
         /// <summary>

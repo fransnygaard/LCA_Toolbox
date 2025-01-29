@@ -22,8 +22,8 @@ namespace LCA_Toolbox
         public override string AuthorName => "Frans Nygaard";
 
         //Return a string representing your preferred contact details.
-        public override string AuthorContact => "";
+        public override string AuthorContact => "www.fransnygaard.com";
 
-        public override string Version => "0.1.4-Alpha";
+        public override string Version => "0.1.5-Alpha";
     }
 }

@@ -14,10 +14,11 @@ using System.Data.Common;
 
 namespace LCA_Toolbox.Database
 {
+    
     public class SqliteDataAcces
     {
         string db_path = string.Empty;
-
+        public string materialDB_fileName = "materialDB_20250129.db";
 
 
         #region INIT 
@@ -65,7 +66,7 @@ namespace LCA_Toolbox.Database
         public string GetPathPytamidenDB_path()
         {
             string folder_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string path = $@"{folder_path}\materialDB_20240220.db";
+            string path = $@"{folder_path}\{materialDB_fileName}";
             return path;
 
         }

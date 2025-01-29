@@ -9,6 +9,7 @@ using Eto.Forms;
 using GH_GeneralClassLibrary.Utils;
 using Grasshopper;
 using Grasshopper.Kernel.Data;
+using System.Linq;
 
 namespace LCA_Toolbox.Components
 {
@@ -46,7 +47,7 @@ namespace LCA_Toolbox.Components
 
             pManager.AddTextParameter(Constants.DataGridHeaders.Name, Constants.DataGridHeaders.NickName, Constants.DataGridHeaders.Discription, GH_ParamAccess.list);
             pManager.AddNumberParameter(Constants.ValueTree.Name, Constants.ValueTree.NickName, Constants.ValueTree.Discription, GH_ParamAccess.tree);
-
+            pManager.AddTextParameter(Constants.CSV,Constants.CSV.NickName, Constants.CSV.Discription, GH_ParamAccess.list);
 
 
 
@@ -70,30 +71,41 @@ namespace LCA_Toolbox.Components
             List<string> DatagridHeaderList = new List<string> {"Year", "Embodied", "Operational", "Total Carbon" , "Cumulative Carbon" } ;
 
             List<double> Years = model.GetDataColumnFromTimeline("Year");
-            List<double> Sum_Embodied = model.GetDataColumnFromTimeline("Sum_Embodied");
-            List<double> Sum_Operational = model.GetDataColumnFromTimeline("Sum_Operational");
-            List<double> Sum_Carbon = model.GetDataColumnFromTimeline("Sum_Carbon");
-            List<double> Cumulative_Carbon = model.GetDataColumnFromTimeline("Cumulative_Carbon");
+            List<double> Sum_Embodied = model.GetDataColumnFromTimeline("Sum_Embodied").Select(x => Math.Round(x, 4)).ToList(); ;
+            List<double> Sum_Operational = model.GetDataColumnFromTimeline("Sum_Operational").Select(x => Math.Round(x, 4)).ToList(); ;
+            List<double> Sum_Carbon = model.GetDataColumnFromTimeline("Sum_Carbon").Select(x => Math.Round(x, 4)).ToList(); ;
+            List<double> Cumulative_Carbon = model.GetDataColumnFromTimeline("Cumulative_Carbon").Select(x => Math.Round(x, 4)).ToList(); ;
 
             //List<List<double>> ValueTreeNestedList = new List<List<double>>();
             DataTree<double> ValueTree = new DataTree<double>();
-            for (int i = 0; i < Sum_Embodied.Count;i++)
+            
+            List<string> csvStrigs = new List<string>
             {
-                ///Rhino.Collections.RhinoList<double> branch = new Rhino.Collections.RhinoList<double>();
-                List<double> branch = new List<double>();
-                branch.Add(Years[i]);
-                branch.Add(Sum_Embodied[i]);
-                branch.Add(Sum_Operational[i]);
-                branch.Add(Sum_Carbon[i]);
-                branch.Add(Cumulative_Carbon[i]);
+                string.Join(",", DatagridHeaderList)
+            };
+
+            for (int i = 0; i < Years.Count;i++)
+            {
+                List<double> branch = new List<double>
+                {
+                    Years[i],
+                    Sum_Embodied[i],
+                    Sum_Operational[i],
+                    Sum_Carbon[i],
+                    Cumulative_Carbon[i]
+                };
+
                 ValueTree.AddRange(branch,new GH_Path(i));
+
+                string csvLine = $"{Years[i]},{Sum_Embodied[i]},{Sum_Operational[i]},{Sum_Carbon[i]},{Cumulative_Carbon[i]}";
+                csvStrigs.Add(csvLine);
 
             }
 
             //SET DATA
-
             DA.SetDataList(outputParams[Constants.DataGridHeaders],DatagridHeaderList);
             DA.SetDataTree(outputParams[Constants.ValueTree], ValueTree);
+            DA.SetDataList(outputParams[Constants.CSV],csvStrigs);
 
 
         }

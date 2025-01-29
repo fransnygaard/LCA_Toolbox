@@ -205,6 +205,9 @@ namespace LCA_Toolbox
 
             LCA_Material material;
 
+            AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, sqliteDataAcces.materialDB_fileName);
+
+
            // SqliteDataAcces sqliteDataAcces = new SqliteDataAcces("pyramiden");
 
             if (sqliteDataAcces.GetMaterialByName(get_dropvariable_material, out material))

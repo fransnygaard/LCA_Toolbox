@@ -1,4 +1,5 @@
-﻿using Grasshopper.Kernel.Types;
+﻿using Grasshopper.Kernel;
+using Grasshopper.Kernel.Types;
 using System;
 using System.Collections.Generic;
 using System.Xml;
@@ -6,6 +7,7 @@ using System.Xml.Linq;
 
 namespace LCA_Toolbox
 {
+
     public class LCA_Element
     {
         //REMOVE WHEN TESTED.
@@ -150,6 +152,8 @@ namespace LCA_Toolbox
             return this.Element_Volume * Material.A1toA3 + Element_A4;
         }
     }
+
+    
 
 }
 

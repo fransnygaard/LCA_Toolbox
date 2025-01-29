@@ -27,8 +27,12 @@ namespace LCA_Toolbox
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
+
+            //SPESIFIC INPUTS FOR ELEMENT FROM SOLID
             pManager.AddGeometryParameter(Constants.SolidGeo.Name, Constants.SolidGeo.NickName, Constants.SolidGeo.Discription, GH_ParamAccess.item);
-           
+
+
+            //FOR ALL ELEMENT TO XXX components
             pManager.AddGenericParameter(Constants.Material.Name, Constants.Material.NickName, Constants.Material.Discription, GH_ParamAccess.item);
             
             pManager.AddIntegerParameter(Constants.Lifetime.Name,Constants.Lifetime.NickName, Constants.Lifetime.Discription, GH_ParamAccess.item,-1);
@@ -56,11 +60,15 @@ namespace LCA_Toolbox
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddGenericParameter(Constants.Element.Name, Constants.Element.NickName, Constants.Element.Discription, GH_ParamAccess.item);
-            
-            pManager.AddNumberParameter(Constants.Volume.Name, Constants.Volume.NickName, Constants.Volume.Discription, GH_ParamAccess.item);
 
             pManager.AddNumberParameter(Constants.Weight.Name, Constants.Weight.NickName, Constants.Weight.Discription, GH_ParamAccess.item);
-           
+
+            pManager.AddNumberParameter(Constants.Volume.Name, Constants.Volume.NickName, Constants.Volume.Discription, GH_ParamAccess.item);
+
+            pManager.AddNumberParameter(Constants.A1toA3_ELEMENT.Name, Constants.A1toA3_ELEMENT.NickName, Constants.A1toA3_ELEMENT.Discription, GH_ParamAccess.item);
+
+            pManager.AddNumberParameter(Constants.A4_ELEMENT.Name, Constants.A4_ELEMENT.NickName, Constants.A4_ELEMENT.Discription, GH_ParamAccess.item);
+
             pManager.AddNumberParameter(Constants.A1toA4_ELEMENT.Name, Constants.A1toA4_ELEMENT.NickName, Constants.A1toA4_ELEMENT.Discription, GH_ParamAccess.item);
 
             registrerOutputParams(pManager);
@@ -132,17 +140,18 @@ namespace LCA_Toolbox
             element.geoGoo = inputGeo;
 
 
+
+
             string _tempStr = string.Empty;
             double _tempNr = double.NaN;
             if (DA.GetData(inputParams[Constants.Element_Name], ref _tempStr)) { element.Element_Name = _tempStr; }
             if (DA.GetData(inputParams[Constants.Element_Group], ref _tempStr)) { element.Element_Group = _tempStr; }
 
+
+
+            //FOR ALL ELEMENT TO XX COMPONENTS
+            //Set A4
             if (DA.GetData(inputParams[Constants.A4_kg], ref _tempNr)) { element.Element_A4_perKG = _tempNr; }
-
-
-
-
-
 
             //SET DATA
 
@@ -150,8 +159,8 @@ namespace LCA_Toolbox
             DA.SetData(outputParams[Constants.Volume], element.Element_Volume);
             DA.SetData(outputParams[Constants.Weight], element.Element_Weight);
             DA.SetData(outputParams[Constants.A1toA4_ELEMENT], element.Element_A1toA4());
-
-
+            DA.SetData(outputParams[Constants.A4_ELEMENT], element.Element_A4);
+            DA.SetData(outputParams[Constants.A1toA3_ELEMENT], element.Element_A1toA3);
         }
 
         /// <summary>
