@@ -156,13 +156,13 @@ namespace LCA_Toolbox
 
         public static Descriptor Density
         {
-            get { return new Descriptor("Density [kg / m3]", "D", "Material density messured in kg/m3. This must be a positive value"); }
+            get { return new Descriptor("Density [kg / m³]", "D", "Material density messured in kg/m³. This must be a positive value"); }
 
         }
 
         public static Descriptor Insulation
         {
-            get { return new Descriptor("Insulation [W / m2 / K]", "Iso", "Thermal conductivity (lambda) of the material, usage not yet implemented..."); }
+            get { return new Descriptor("Insulation [W / m² / K]", "Iso", "Thermal conductivity (lambda) of the material, usage not yet implemented..."); }
 
         }
 
@@ -175,10 +175,10 @@ namespace LCA_Toolbox
         #region LCA STAGES
         public static Descriptor A1toA3_m3
         {
-            get { return new Descriptor("A1-A3: Product stage [kg CO2eq / m3]", "A1-A3 per m3",
+            get { return new Descriptor("A1-A3: Product stage [kg CO₂eq / m³]", "A1-A3 per m³",
                 "Stage A1-A3: Product stage (Cradle to Gate)" +
-                "\n Global warming potential (CO2eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
-                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)");
+                "\n Global warming potential (CO₂eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
+                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO₂)");
             }
 
         }
@@ -186,19 +186,19 @@ namespace LCA_Toolbox
         {
             get
             {
-                return new Descriptor("A1-A3: Product stage [kg CO2eq / element]", "A1-A3 per element",
+                return new Descriptor("A1-A3: Product stage [kg CO₂eq / element]", "A1-A3 per element",
                  "Stage A1-A3: Product stage (Cradle to Gate)" +
-                "\n Global warming potential (CO2eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
-                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)");
+                "\n Global warming potential (CO₂eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
+                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO₂)");
             }
 
         }
         public static Descriptor A1toA4_ELEMENT
         {
-            get { return new Descriptor("A1-A4: Product stage + transportation [kg CO2eq / element]", "A1-A4 per element",
+            get { return new Descriptor("A1-A4: Product stage + transportation [kg CO₂eq / element]", "A1-A4 per element",
                  "Stage A1-A4: Product stage  + transportation (Cradle to Site)" +
-                "\n Global warming potential (CO2eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
-                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)");
+                "\n Global warming potential (CO₂eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
+                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO₂)");
             }
 
         }
@@ -206,10 +206,10 @@ namespace LCA_Toolbox
         {
             get
             {
-                return new Descriptor("A4: Transport to site [kg CO2eq / element]", "A4 per element",
+                return new Descriptor("A4: Transport to site [kg CO₂eq / element]", "A4 per element",
                  "Stage A4: Transportation stage (Gate to Site)" +
-                "\n Global warming potential (CO2eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
-                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)");
+                "\n Global warming potential (CO₂eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
+                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO₂)");
             }
 
         }
@@ -217,10 +217,10 @@ namespace LCA_Toolbox
         {
             get
             {
-                return new Descriptor("A4: Transportation to site [kg CO2eq / kg]", "A4 per kg",
+                return new Descriptor("A4: Transportation to site [kg CO₂eq / kg]", "A4 per kg",
                 "Stage A4: Transportation to site " +
-                "\n Global warming potential (CO2eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
-                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)");
+                "\n Global warming potential (CO₂eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
+                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO₂)");
 
             }
         }
@@ -231,15 +231,15 @@ namespace LCA_Toolbox
         {
             get
             {
-                return new Descriptor("B6: Operational energy [kg CO2eq / year]", "B6 per year",
+                return new Descriptor("B6: Operational energy [kg CO₂eq / year]", "B6 per year",
                 "Stage B6: Operational energy" +
-                "\n Global warming potential (CO2eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
-                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)");
+                "\n Global warming potential (CO₂eq) is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame" +
+                "\n as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO₂)");
             }
         }
         public static Descriptor C1_C4
         {
-            get { return new Descriptor("C1-C4: End of life [kg CO2eq / m3]", "C1-C4", "??"); }
+            get { return new Descriptor("C1-C4: End of life [kg CO₂eq / m³]", "C1-C4", "??"); }
 
         }
         public static Descriptor D_Reuse
@@ -255,19 +255,19 @@ namespace LCA_Toolbox
 
         public static Descriptor Embodied_carbon
         {
-            get { return new Descriptor("Embodied Carbon [kg CO2eq]", "Embodied_Carbon", "??"); }
+            get { return new Descriptor("Embodied Carbon [kg CO₂eq]", "Embodied_Carbon", "??"); }
 
         }
 
         public static Descriptor Operational_carbon
         {
-            get { return new Descriptor("Operational Carbon [kg CO2eq]", "Operational_Carbon", "??"); }
+            get { return new Descriptor("Operational Carbon [kg CO₂eq]", "Operational_Carbon", "??"); }
 
         }
 
         public static Descriptor Circular_ReusePotential
         {
-            get { return new Descriptor("Circular reuse potential [kg CO2eq]", "Reuse_potential ", "??"); }
+            get { return new Descriptor("Circular reuse potential [kg CO₂eq]", "Reuse_potential ", "??"); }
 
         }
 
@@ -310,12 +310,12 @@ namespace LCA_Toolbox
 
         public static Descriptor GWP_TOTAL
         {
-            get { return new Descriptor("GWP Total [kg CO2eq] ", "GWP_Total", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO2)."); }
+            get { return new Descriptor("GWP Total [kg CO₂eq] ", "GWP_Total", "Global warming potential (GWP)\n is a measure of how much infrared thermal radiation a greenhouse gas added to the atmosphere would absorb over a given time frame, as a multiple of the radiation that would be absorbed by the same mass of added carbon dioxide (CO₂)."); }
              
         }
         public static Descriptor ODP
         {
-            get { return new Descriptor("ODP [R11 eq / m3]", "ODP", "Ozone depletion potential (ODP)\n of a chemical compound is the relative amount of degradation to the ozone layer it can cause, with trichlorofluoromethane (R-11 or CFC-11) being fixed at an ODP of 1.0."); }
+            get { return new Descriptor("ODP [R11 eq / m³]", "ODP", "Ozone depletion potential (ODP)\n of a chemical compound is the relative amount of degradation to the ozone layer it can cause, with trichlorofluoromethane (R-11 or CFC-11) being fixed at an ODP of 1.0."); }
 
         }
         /// <summary>
@@ -365,7 +365,7 @@ namespace LCA_Toolbox
         }
         public static Descriptor Volume
         {
-            get { return new Descriptor("Volume [m3]", "m3", "Total volume in cubic meters [m3]."); }
+            get { return new Descriptor("Volume [m³]", "m³", "Total volume in cubic meters [m³]."); }
 
         }
 
